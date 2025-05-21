@@ -1,2 +1,28 @@
-/node_modules
-/vendor
+# Ignore node_modules (npm dependencies)
+node_modules/
+
+# Ignore environment/config files with sensitive info (if you have any)
+# e.g. if config.php contains passwords, ignore it or use env variables
+config/config.php
+
+# Ignore log files, if any
+*.log
+
+# Ignore OS or editor files
+.DS_Store
+Thumbs.db
+*.swp
+*.idea/
+*.vscode/
+
+# Ignore compiled CSS or JS if you use build tools
+# But if input.css and output.css are both committed intentionally, then keep them
+# If output.css is generated, ignore it
+public/css/output.css
+
+# Ignore package-lock.json only if you don't want to commit it
+# (Generally, it's good to commit package-lock.json for exact dependency versions)
+# So I recommend keeping it committed.
+
+# Ignore database dumps if not needed
+db/*.sql
