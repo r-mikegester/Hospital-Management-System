@@ -1,5 +1,5 @@
 <?php
-include($_SERVER['DOCUMENT_ROOT'] . '/Hospital-Management-System/config/config.php');
+include($_SERVER['DOCUMENT_ROOT'] . '/Logistics/config/config.php');
 
 // Assuming a PDO connection in your config file:
 try {

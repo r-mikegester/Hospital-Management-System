@@ -1,5 +1,5 @@
 <?php
-include(($_SERVER['DOCUMENT_ROOT'] . '/Hospital-Management-System/config/config.php'));
+include(($_SERVER['DOCUMENT_ROOT'] . '/Logistics/config/config.php'));
 
 
 ?>
@@ -16,7 +16,7 @@ include(($_SERVER['DOCUMENT_ROOT'] . '/Hospital-Management-System/config/config.
                     <rect width="352" height="32" x="80" y="384"></rect>
                 </svg>                                                                                              
             </button> -->
-            <img src="/Hospital-Management-System/public/imgs/logo.png"  alt="logo" class="size-40">
+            <img src="/Logistics/public/imgs/logo.png"  alt="logo" class="size-40">
         </div>
         <div class="relative">
             <span class="absolute inset-y-0 left-0 flex items-center py-4">

@@ -1,5 +1,5 @@
 <?php
-include($_SERVER['DOCUMENT_ROOT'] . '/Hospital-Management-System/config/config.php');
+include($_SERVER['DOCUMENT_ROOT'] . '/Logistics/config/config.php');
 
 // Handle form submission for adding a contract
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
