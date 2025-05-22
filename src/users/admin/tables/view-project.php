@@ -99,7 +99,7 @@ try {
                                 </select>
                             </div>
                             <div class="col-md-3">
-                                <button type="submit" class="btn btn-primary bg-[#4a628a]">Add Project</button>
+                                <button type="submit" class="btn btn-primary">Add Project</button>
                             </div>
                         </div>
                     </form>
@@ -129,7 +129,7 @@ try {
                                     <td><?= $project['updated_at'] ?></td>
                                     <td>
                                         <!-- Edit Button -->
-                                        <button class="btn btn-warning btn-sm bg-[#4a628a]" onclick="editProject(<?= $project['id'] ?>, '<?= htmlspecialchars($project['name']) ?>', '<?= $project['start_date'] ?>', '<?= $project['end_date'] ?>', '<?= $project['status'] ?>')">Edit</button>
+                                        <button class="btn btn-warning btn-sm " onclick="editProject(<?= $project['id'] ?>, '<?= htmlspecialchars($project['name']) ?>', '<?= $project['start_date'] ?>', '<?= $project['end_date'] ?>', '<?= $project['status'] ?>')">Edit</button>
 
                                         <!-- Delete Button -->
                                         <a href="?delete_id=<?= $project['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this project?')">Delete</a>
