@@ -31,8 +31,11 @@ Before setting up this project, ensure you have the following installed:
 ### Step 1: Clone the Repository
 
 ```bash
-$ git clone <repository-url>
+$ git clone https://github.com/r-mikegester/Hospital-Management-System
+$ create a folder in htdocs name it Logistics
 $ cd Logistics
+$ npm install
+$ then run your xampp and preview 
 ```
 
 ---
@@ -144,17 +147,6 @@ http://logistics.local
 ---
 
 ## Additional Configuration
-
-### Toastify.js Integration
-
-Toastify.js is used for toast notifications. Ensure you include its CSS and JS files in your project:
-
-```html
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-```
-
-You can customize the toast notifications in `main.js` or inline JavaScript.
 
 ### Tailwind CSS Integration
 
