@@ -29,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Check if email already exists using PDO
     $query = "SELECT * FROM login WHERE email = :email";
-    $stmt = $conn->prepare($query);
+    $stmt = $pdo->prepare($query);
     $stmt->execute(['email' => $email]);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -42,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Insert into database
     $hashed_password = password_hash($password, PASSWORD_BCRYPT);
     $insert_query = "INSERT INTO login (email, user_role, password) VALUES (:email, :user_role, :password)";
-    $insert_stmt = $conn->prepare($insert_query);
+    $insert_stmt = $pdo->prepare($insert_query);
 
     $params = [
         ':email' => $email,
