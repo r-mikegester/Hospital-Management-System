@@ -1,5 +1,5 @@
 <?php
-include($_SERVER['DOCUMENT_ROOT'] . '/Logistics/config/config.php');
+include($_SERVER['DOCUMENT_ROOT'] . '/Hospital-Management-System/config/config.php');
 ?>
 
 <!DOCTYPE html>
@@ -32,20 +32,32 @@ include($_SERVER['DOCUMENT_ROOT'] . '/Logistics/config/config.php');
             </aside>
 
             <main class="flex-1 mt-20 p-6">
-                <div class="">
-                    <div class="">
-                        <h1>Procurement Management</h1>
+                <div class="mb-10">
+                        <h class="text-3xl font-bold">Procurement Management</h>
                     </div>
-                    <div class="grid grid-cols-3 grid-rows-3 gap-10 ">
-                        <div class="bg-red-500"></div>
-                        <div class="bg-red-500"></div>
-                        <div class="bg-red-500"></div>
-                        <div class="bg-red-500"></div>
-                        <div class="bg-red-500"></div>
-                        <div class="bg-red-500"></div>
-                    </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <a href="/Hospital-Management-System/src/users/admin/tables/view-procurement-item.php">
+                        <div class="bg-white shadow-xl rounded-2xl p-10 text-center cursor-pointer hover:shadow-2xl transition-shadow">
+                            <h1 class="text-3xl font-bold mb-8">Procurement</h1>
+                        </div>
+                    </a>
+                    <a href="/Hospital-Management-System/src/users/admin/tables/view-purchases.php">
+                        <div class="bg-white shadow-xl rounded-2xl p-10 text-center cursor-pointer hover:shadow-2xl transition-shadow">
+                            <h1 class="text-3xl font-bold mb-8">Purchases</h1>
+                        </div>
+                    </a>
+                    
+                    <a href="/Hospital-Management-System/src/users/admin/tables/view-vendor.php">
+                        <div class="bg-white shadow-xl rounded-2xl p-10 text-center cursor-pointer hover:shadow-2xl transition-shadow">
+                            <h1 class="text-3xl font-bold mb-8">Vendor</h1>
+                        </div>
+                    </a>
+                    <a href="/Hospital-Management-System/src/users/admin/tables/view-warehouse.php">
+                        <div class="bg-white shadow-xl rounded-2xl p-10 text-center cursor-pointer hover:shadow-2xl transition-shadow">
+                            <h1 class="text-3xl font-bold mb-8">Warehouse</h1>
+                        </div>
+                    </a>
                 </div>
-
             </main>
         </div>
 

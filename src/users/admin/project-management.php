@@ -1,5 +1,5 @@
 <?php
-include($_SERVER['DOCUMENT_ROOT'] . '/Logistics/config/config.php');
+include($_SERVER['DOCUMENT_ROOT'] . '/Hospital-Management-System/config/config.php');
 
 // Assuming a PDO connection in your config file:
 try {
@@ -75,7 +75,7 @@ try {
                         </div>
 
 
-                        <a href="/Logistics/src/users/admin/tables/view-project.php" class="shadow-2xl btn bg-white border border-gray-200 rounded-2xl flex justify-center items-center h-40">
+                        <a href="/Hospital-Management-System/src/users/admin/tables/view-project.php" class="shadow-2xl btn bg-white border border-gray-200 rounded-2xl flex justify-center items-center h-40">
                             <div class="flex flex-col justify-center items-center w-full">
                                 <div class="text-3xl font-semibold">Project Management</div>
                             </div>
@@ -87,7 +87,7 @@ try {
                                     <div class="text-xl bg-gray-400 p-2 rounded-xl font-semibold btn">
                                         <h1>Add Task</h1>
                                     </div>
-                                    <a href="/Logistics/src/users/admin/tables/view-task.php" class="text-xl bg-gray-400 btn p-2 rounded-xl font-semibold">
+                                    <a href="/Hospital-Management-System/src/users/admin/tables/view-task.php" class="text-xl bg-gray-400 btn p-2 rounded-xl font-semibold">
                                         <h1>View Task</h1>
                                     </a>
                                 </div>
