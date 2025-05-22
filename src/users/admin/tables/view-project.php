@@ -36,14 +36,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 // Handle deletion of a project
 if (isset($_GET['delete_id'])) {
     try {
+        $pdo->beginTransaction(); // Start a transaction
+
+        // Delete related risks
+        $stmt = $pdo->prepare("DELETE FROM risks WHERE project_id = ?");
+        $stmt->execute([$_GET['delete_id']]);
+
+        // Delete the project
         $stmt = $pdo->prepare("DELETE FROM project WHERE id = ?");
         $stmt->execute([$_GET['delete_id']]);
-        header("Location: " . $_SERVER['PHP_SELF']); // Refresh the page
+
+        $pdo->commit(); // Commit the transaction
+        header("Location: " . $_SERVER['PHP_SELF']);
         exit;
     } catch (PDOException $e) {
+        $pdo->rollBack(); // Rollback the transaction if something goes wrong
         die("Error: " . $e->getMessage());
     }
 }
+
 
 // Fetch all projects
 try {
