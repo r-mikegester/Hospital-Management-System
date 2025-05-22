@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 22, 2025 at 03:49 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Generation Time: May 22, 2025 at 07:54 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -51,6 +51,22 @@ CREATE TABLE `asset` (
   `acquisition_date` date DEFAULT NULL,
   `location` varchar(255) DEFAULT NULL,
   `warehouse_id` int(11) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `contracts`
+--
+
+CREATE TABLE `contracts` (
+  `contract_id` int(11) NOT NULL,
+  `company_id` int(11) NOT NULL,
+  `start_date` date NOT NULL,
+  `expiry_date` date NOT NULL,
+  `status` enum('active','expired','terminated','pending') DEFAULT 'pending',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -125,10 +141,8 @@ CREATE TABLE `login` (
 --
 
 INSERT INTO `login` (`id`, `email`, `password`, `cpassword`, `user_role`, `created_at`, `updated_at`) VALUES
-(1, 'admin@gmail.com', '123', '', 'admin', '2025-05-20 17:35:11', '2025-05-20 17:35:11'),
-(2, 'employee@gmail.com', '123', '', 'user', '2025-05-20 17:35:32', '2025-05-20 17:35:32'),
-(4, 'hr@gmail.com', '123', '', 'manager', '2025-05-20 18:11:34', '2025-05-20 18:11:34'),
-(5, 'supp.mikegester@gmail.com', '$2y$10$lZ/i3wbO1nqsHSzrSNHZvOn4MUTsRTOVxCFYbcYpyQa1imTOyCmrm', '', 'admin', '2025-05-21 18:20:51', '2025-05-21 18:20:51');
+(5, 'supp.mikegester@gmail.com', '$2y$10$lZ/i3wbO1nqsHSzrSNHZvOn4MUTsRTOVxCFYbcYpyQa1imTOyCmrm', '', 'admin', '2025-05-21 18:20:51', '2025-05-21 18:20:51'),
+(6, 'admin@gmail.com', '$2y$10$0Mp3QAQfa/4/HrnrApaX9.M/ctXvsfMeJUiCb6u/9cDvBNySl.W1W', '', 'admin', '2025-05-22 01:59:07', '2025-05-22 01:59:07');
 
 -- --------------------------------------------------------
 
@@ -168,6 +182,19 @@ CREATE TABLE `maintenancelog` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `managers`
+--
+
+CREATE TABLE `managers` (
+  `manager_id` int(11) NOT NULL,
+  `manager_name` varchar(100) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `procurement`
 --
 
@@ -180,6 +207,13 @@ CREATE TABLE `procurement` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `procurement`
+--
+
+INSERT INTO `procurement` (`procurement_id`, `supplier_id`, `procurement_date`, `total_amount`, `status`, `created_at`, `updated_at`) VALUES
+(2, NULL, '2025-05-01', 250.00, 'Pending', '2025-05-22 03:54:36', '2025-05-22 03:54:36');
 
 -- --------------------------------------------------------
 
@@ -252,6 +286,48 @@ CREATE TABLE `project_employee` (
   `employee_id` int(11) NOT NULL,
   `role` varchar(100) DEFAULT NULL,
   `hours_assigned` int(11) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `purchases`
+--
+
+CREATE TABLE `purchases` (
+  `bill_number` int(11) NOT NULL,
+  `supplier` varchar(255) NOT NULL,
+  `purchase_date` date NOT NULL,
+  `item_id` int(11) NOT NULL,
+  `item_name` varchar(255) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `unit_price` decimal(10,2) NOT NULL,
+  `total_price` decimal(10,2) GENERATED ALWAYS AS (`quantity` * `unit_price`) STORED
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `purchases`
+--
+
+INSERT INTO `purchases` (`bill_number`, `supplier`, `purchase_date`, `item_id`, `item_name`, `quantity`, `unit_price`) VALUES
+(1001, '	ABC Supplies', '2025-05-02', 501, '	Printer Ink', 10, 350.00);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `registration_info`
+--
+
+CREATE TABLE `registration_info` (
+  `company_id` int(11) NOT NULL,
+  `company_name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `contact_number` varchar(50) DEFAULT NULL,
+  `address` text DEFAULT NULL,
+  `products` text DEFAULT NULL,
+  `business_type` varchar(100) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -409,6 +485,13 @@ ALTER TABLE `asset`
   ADD KEY `warehouse_id` (`warehouse_id`);
 
 --
+-- Indexes for table `contracts`
+--
+ALTER TABLE `contracts`
+  ADD PRIMARY KEY (`contract_id`),
+  ADD KEY `company_id` (`company_id`);
+
+--
 -- Indexes for table `employee`
 --
 ALTER TABLE `employee`
@@ -451,6 +534,12 @@ ALTER TABLE `maintenancelog`
   ADD KEY `performed_by` (`performed_by`);
 
 --
+-- Indexes for table `managers`
+--
+ALTER TABLE `managers`
+  ADD PRIMARY KEY (`manager_id`);
+
+--
 -- Indexes for table `procurement`
 --
 ALTER TABLE `procurement`
@@ -484,6 +573,19 @@ ALTER TABLE `project_employee`
   ADD PRIMARY KEY (`project_employee_id`),
   ADD UNIQUE KEY `project_id` (`project_id`,`employee_id`),
   ADD KEY `employee_id` (`employee_id`);
+
+--
+-- Indexes for table `purchases`
+--
+ALTER TABLE `purchases`
+  ADD PRIMARY KEY (`item_id`);
+
+--
+-- Indexes for table `registration_info`
+--
+ALTER TABLE `registration_info`
+  ADD PRIMARY KEY (`company_id`),
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- Indexes for table `resources`
@@ -551,6 +653,12 @@ ALTER TABLE `asset`
   MODIFY `asset_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `contracts`
+--
+ALTER TABLE `contracts`
+  MODIFY `contract_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
@@ -572,7 +680,7 @@ ALTER TABLE `inventorymovement`
 -- AUTO_INCREMENT for table `login`
 --
 ALTER TABLE `login`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `maintenance`
@@ -587,16 +695,22 @@ ALTER TABLE `maintenancelog`
   MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `managers`
+--
+ALTER TABLE `managers`
+  MODIFY `manager_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `procurement`
 --
 ALTER TABLE `procurement`
-  MODIFY `procurement_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `procurement_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `procurement_item`
 --
 ALTER TABLE `procurement_item`
-  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `progressreport`
@@ -615,6 +729,18 @@ ALTER TABLE `project`
 --
 ALTER TABLE `project_employee`
   MODIFY `project_employee_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `purchases`
+--
+ALTER TABLE `purchases`
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=502;
+
+--
+-- AUTO_INCREMENT for table `registration_info`
+--
+ALTER TABLE `registration_info`
+  MODIFY `company_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `resources`
@@ -674,6 +800,12 @@ ALTER TABLE `approval`
 --
 ALTER TABLE `asset`
   ADD CONSTRAINT `asset_ibfk_1` FOREIGN KEY (`warehouse_id`) REFERENCES `warehouse` (`warehouse_id`);
+
+--
+-- Constraints for table `contracts`
+--
+ALTER TABLE `contracts`
+  ADD CONSTRAINT `contracts_ibfk_1` FOREIGN KEY (`company_id`) REFERENCES `registration_info` (`company_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `inventoryitem`
