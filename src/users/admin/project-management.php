@@ -28,14 +28,9 @@ try {
     <title>Project Management</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- Optionally add FontAwesome if your sidebar uses icons -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.2/dist/tailwind.min.css" rel="stylesheet">
-
-    <!-- Your custom CSS -->
     <link rel="stylesheet" href="../public/css/custom.css" />
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
 </head>
 
 <body>
@@ -54,122 +49,84 @@ try {
                     <div class="mb-10">
                         <h class="text-3xl font-bold">Project Management</h>
                     </div>
-                    <div class="grid grid-cols-3 grid-rows-3 gap-10 ">
-                        <div class="shadow-2xl bg-white border border-gray-200 rounded-2xl flex justify-center items-center h-20">
-                            <div class="flex justify-between items-center w-full px-20">
-                                <div class="text-xl font-semibold">Total Project</div>
-                                <div class="text-xl font-semibold"><?php echo $totalProjects; ?></div>
+                    <div class="grid grid-cols-3 gap-10">
+                        <!-- Total Project Card -->
+                        <div class="shadow-2xl bg-gray-200 border border-gray-200 rounded-2xl flex justify-between items-center px-6 py-4">
+                           <div class="flex space-x-3">
+                             <span class="iconify text-blue-500 text-3xl size-10" data-icon="ic:baseline-folder"></span>
+                            <div class="text-3xl font-semibold">Total Project</div>
+                           </div>
+                            <div class="text-right">
+                                
+                                <div class="text-3xl bg-gray-400 border border-gray-500 p-3 rounded-lg font-semibold"><?php echo $totalProjects; ?></div>
                             </div>
                         </div>
-                        <div class="shadow-2xl bg-white border border-gray-200 rounded-2xl flex justify-center items-center h-20">
-                            <div class="flex justify-between items-center w-full px-20">
-                                <div class="text-xl font-semibold">Total Task</div>
-                                <div class="text-xl font-semibold"><?php echo $totalTasks; ?></div>
-                            </div>
-                        </div>
-                        <div class="shadow-2xl bg-white border border-gray-200 rounded-2xl flex justify-center items-center h-20">
-                            <div class="flex justify-between items-center w-full px-20">
-                                <div class="text-xl font-semibold">Total Employee</div>
-                                <div class="text-xl font-semibold"><?php echo $totalEmployees; ?></div>
+                        
+                        <!-- Total Task Card -->
+                        <div class="shadow-2xl bg-gray-200 border border-gray-200 rounded-2xl flex justify-between items-center px-6 py-4">
+                            <div class="flex space-x-3">
+                             <span class="iconify text-green-500 text-3xl size-10" data-icon="ic:baseline-folder"></span>
+                            <div class="text-3xl font-semibold">Total Tasks</div>
+                           </div>
+                            <div class="text-right">
+                                <div class="text-3xl bg-gray-400 border border-gray-500 p-3 rounded-lg font-semibold"><?php echo $totalTasks; ?></div>
                             </div>
                         </div>
 
-
-                        <a href="/Hospital-Management-System/src/users/admin/tables/view-project.php" class="shadow-2xl btn bg-white border border-gray-200 rounded-2xl flex justify-center items-center h-40">
-                            <div class="flex flex-col justify-center items-center w-full">
-                                <div class="text-3xl font-semibold">Project Management</div>
+                        <!-- Total Employee Card -->
+                        <div class="shadow-2xl bg-gray-200 border border-gray-200 rounded-2xl flex justify-between items-center px-6 py-4">
+                            <div class="flex space-x-3">
+                                <span class="iconify text-orange-500 text-3xl"  size-10 data-icon="mdi:account-multiple"></span>
+                            <div class="text-3xl font-semibold">Total Employee</div>
                             </div>
+                            <div class="text-right">
+                                <div class="text-3xl bg-gray-400 border border-gray-500 p-3 rounded-lg font-semibold"><?php echo $totalEmployees; ?></div>
+                            </div>
+                        </div>
+
+                        <!-- Project Management Link -->
+                        <a href="/Logistics/src/users/admin/tables/view-project.php" class="shadow-2xl bg-white border hover:bg-gray-400 border-gray-200 rounded-2xl flex flex-col justify-center items-center h-40">
+                            <span class="iconify text-gray-700 text-5xl" data-icon="mdi:file-document-edit-outline"></span>
+                            <div class="text-3xl font-semibold">Project Management</div>
                         </a>
-                        <div class="shadow-2xl bg-white border border-gray-200 rounded-2xl flex justify-center items-center h-40">
-                            <div class="flex flex-col justify-center rounded-2xl items-center w-full">
-                                <div class="text-xl font-semibold">Task Management</div>
-                                <div class="flex justify-between w-full px-16 py-10">
-                                    <div class="text-xl bg-gray-400 p-2 rounded-xl font-semibold btn">
-                                        <h1>Add Task</h1>
-                                    </div>
-                                    <a href="/Hospital-Management-System/src/users/admin/tables/view-task.php" class="text-xl bg-gray-400 btn p-2 rounded-xl font-semibold">
-                                        <h1>View Task</h1>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="shadow-2xl bg-white border border-gray-200 rounded-2xl flex justify-center items-center h-40">
-                            <div class="flex flex-col justify-center rounded-2xl items-center w-full">
-                                <div class="text-xl font-semibold">Employee Management</div>
-                                <div class="flex justify-between w-full px-16 py-10">
-                                    <div class="text-xl bg-gray-400 btn p-2 rounded-xl font-semibold">
-                                        <h1>Add Employee</h1>
-                                    </div>
-                                    <div class="text-xl bg-gray-400 btn p-2 rounded-xl font-semibold">
-                                        <h1>View Employees</h1>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="shadow-2xl bg-white border border-gray-200 rounded-2xl flex justify-center items-center h-40">
-                            <div class="flex flex-col justify-center rounded-2xl items-center w-full">
-                                <div class="text-xl font-semibold">Resource Management</div>
-                                <div class="flex justify-between w-full px-16 py-10">
-                                    <div class="text-xl bg-gray-400 btn p-2 rounded-xl font-semibold">
-                                        <h1>Add Resource</h1>
-                                    </div>
-                                    <div class="text-xl bg-gray-400 btn p-2 rounded-xl font-semibold">
-                                        <h1>View Resources</h1>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="shadow-2xl bg-white border border-gray-200 rounded-2xl flex justify-center items-center h-40">
-                            <div class="flex flex-col justify-center rounded-2xl items-center w-full">
-                                <div class="text-xl font-semibold">Risk Management</div>
-                                <div class="flex justify-between w-full px-16 py-10">
-                                    <div class="text-xl bg-gray-400 btn p-2 rounded-xl font-semibold">
-                                        <h1>Add Risk</h1>
-                                    </div>
-                                    <div class="text-xl bg-gray-400 btn p-2 rounded-xl font-semibold">
-                                        <h1>View Risks</h1>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="shadow-2xl bg-white border border-gray-200 rounded-2xl flex justify-center items-center h-40">
-                            <div class="flex flex-col justify-center rounded-2xl items-center w-full">
-                                <div class="text-xl font-semibold">Progress Report</div>
-                                <div class="flex justify-between w-full px-16 py-10">
-                                    <div class="text-xl bg-gray-400 btn p-2 rounded-xl font-semibold">
-                                        <h1>Add Progress</h1>
-                                    </div>
-                                    <div class="text-xl bg-gray-400 btn p-2 rounded-xl font-semibold">
-                                        <h1>View Progress</h1>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
+                        <!-- Task Management Link -->
+                        <a href="/Logistics/src/users/admin/tables/view-task.php" class="shadow-2xl bg-white border hover:bg-gray-400 border-gray-200 rounded-2xl flex flex-col justify-center items-center h-40">
+                            <span class="iconify text-gray-700 text-5xl" data-icon="mdi:clipboard-list-outline"></span>
+                            <div class="text-3xl font-semibold">Task Management</div>
+                        </a>
+
+                        <!-- Employee Management Link -->
+                        <a href="/Logistics/src/users/admin/tables/view-employee.php" class="shadow-2xl bg-white border hover:bg-gray-400 border-gray-200 rounded-2xl flex flex-col justify-center items-center h-40">
+                            <span class="iconify text-gray-700 text-5xl" data-icon="mdi:account-group-outline"></span>
+                            <div class="text-3xl font-semibold">Employee Management</div>
+                        </a>
+
+                        <!-- Resource Management Link -->
+                        <a href="/Logistics/src/users/admin/tables/view-resource.php" class="shadow-2xl bg-white border hover:bg-gray-400 border-gray-200 rounded-2xl flex flex-col justify-center items-center h-40">
+                            <span class="iconify text-gray-700 text-5xl" data-icon="mdi:toolbox-outline"></span>
+                            <div class="text-3xl font-semibold">Resource Management</div>
+                        </a>
+
+                        <!-- Risk Management Link -->
+                        <a href="/Logistics/src/users/admin/tables/view-risk.php" class="shadow-2xl bg-white border hover:bg-gray-400 border-gray-200 rounded-2xl flex flex-col justify-center items-center h-40">
+                            <span class="iconify text-gray-700 text-5xl" data-icon="mdi:alert-circle-outline"></span>
+                            <div class="text-3xl font-semibold">Risk Management</div>
+                        </a>
+
+                        <!-- Progress Report Link -->
+                        <a href="/Logistics/src/users/admin/tables/view-progress.php" class="shadow-2xl bg-white border hover:bg-gray-400 border-gray-200 rounded-2xl flex flex-col justify-center items-center h-40">
+                            <span class="iconify text-gray-700 text-5xl" data-icon="mdi:chart-line"></span>
+                            <div class="text-3xl font-semibold">Progress Report</div>
+                        </a>
                     </div>
                 </div>
-
             </main>
         </div>
 
-
-        <!-- Add Project Modal -->
-
-
     </div>
 
-    <script>
-        const sidebar = document.getElementById('sidebar');
-        const sidebarToggle = document.getElementById('sidebarToggle');
-
-        sidebarToggle.addEventListener('click', () => {
-            sidebar.style.width = sidebar.style.width === '0px' ? '250px' : '0px';
-            sidebarToggle.textContent = sidebar.style.width === '0px' ? '☰' : '✕';
-        });
-    </script>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 
 </html>
