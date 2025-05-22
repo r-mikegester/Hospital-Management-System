@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (empty($emailErr) && empty($passwordErr)) {
         // Prepare and execute PDO statement
-        $stmt = $conn->prepare("SELECT email, password, user_role FROM login WHERE email = :email");
+        $stmt = $pdo->prepare("SELECT email, password, user_role FROM login WHERE email = :email");
         $stmt->execute(['email' => $email]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
