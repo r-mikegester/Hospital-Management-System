@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Admin Dashboard</title>    
+    <title>Admin Dashboard</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
-      <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <!-- Optionally add FontAwesome if your sidebar uses icons -->
 
     <!-- Your custom CSS -->
@@ -35,11 +35,71 @@
                 <?php include("../../../components/sidebar2.php"); ?>
             </aside>
 
-            <main class="flex-1 mt-20 p-6">
-                <h1>Welcome, Admin!</h1>
-                <p>This is a temporary admin dashboard.</p>
-                <!-- Add admin features here -->
-            </main>
+            <main class="flex-1 mt-20 p-10 bg-gradient-to-b from-gray-100 to-blue-50 rounded-lg">
+  <!-- Header Section -->
+  <section class="text-center mb-12">
+    <div class=" text-[#4a628a] py-8 px-6 rounded-lg ">
+      <h1 class="text-5xl font-bold">Logistics1</h1>
+      <p class="text-lg mt-4 max-w-2xl mx-auto">
+        Empowering businesses with seamless logistics solutions. Together, we optimize your operations for success.
+      </p>
+    </div>
+  </section>
+
+  <!-- Team Section -->
+  <section class="max-w-5xl mx-auto">
+    <h2 class="text-3xl font-bold text-[#4a628a] mb-6 text-center">Meet Our Team</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Russel Santillan -->
+      <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+        <div class="text-center">
+          <img src="https://api.dicebear.com/6.x/adventurer/svg?seed=Russel" alt="Russel Santillan" class="w-24 h-24 rounded-full mx-auto mb-4">
+          <h3 class="text-xl font-semibold text-[#4a628a]">Russel Santillan</h3>
+          <p class="text-gray-600">Leader</p>
+        </div>
+      </div>
+
+      <!-- Denver Sabuga -->
+      <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+        <div class="text-center">
+          <img src="https://api.dicebear.com/6.x/adventurer/svg?seed=Denver" alt="Denver Sabuga" class="w-24 h-24 rounded-full mx-auto mb-4">
+          <h3 class="text-xl font-semibold text-[#4a628a]">Denver Sabuga</h3>
+          <p class="text-gray-600">Programmer</p>
+        </div>
+      </div>
+
+      <!-- James Carabuena -->
+      <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+        <div class="text-center">
+          <img src="https://api.dicebear.com/6.x/adventurer/svg?seed=James" alt="James Carabuena" class="w-24 h-24 rounded-full mx-auto mb-4">
+          <h3 class="text-xl font-semibold text-[#4a628a]">James Carabuena</h3>
+          <p class="text-gray-600">Document Specialist</p>
+        </div>
+      </div>
+
+      <!-- Mark Joseph Narciso -->
+      <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+        <div class="text-center">
+          <img src="https://api.dicebear.com/6.x/adventurer/svg?seed=Mark" alt="Mark Joseph Narciso" class="w-24 h-24 rounded-full mx-auto mb-4">
+          <h3 class="text-xl font-semibold text-[#4a628a]">Mark Joseph Narciso</h3>
+          <p class="text-gray-600">UI Designer</p>
+        </div>
+      </div>
+
+      <!-- John Lloyd Morales -->
+      <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow">
+        <div class="text-center">
+          <img src="https://api.dicebear.com/6.x/adventurer/svg?seed=John" alt="John Lloyd Morales" class="w-24 h-24 rounded-full mx-auto mb-4">
+          <h3 class="text-xl font-semibold text-[#4a628a]">John Lloyd Morales</h3>
+          <p class="text-gray-600">Support Staff</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+
+
         </div>
 
 
