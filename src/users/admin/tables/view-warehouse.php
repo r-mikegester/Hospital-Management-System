@@ -74,6 +74,10 @@ try {
 
             <div class="flex-1 mt-20 p-6">
                 <h1 class="text-3xl font-bold mb-10">Warehouse List</h1>
+
+                <!-- Add Warehouse Button -->
+                <button class="btn btn-primary mb-3" onclick="showAddModal()">Add Warehouse</button>
+
                 <div>
                     <table class="table table-bordered table-striped">
                         <thead>
@@ -112,6 +116,34 @@ try {
                 </div>
             </div>
 
+            <!-- Add Warehouse Modal -->
+            <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <form method="POST" class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addModalLabel">Add Warehouse</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" name="action" value="add">
+
+                            <div class="mb-3">
+                                <label for="add-location" class="form-label">Location</label>
+                                <input type="text" name="location" id="add-location" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="add-capacity" class="form-label">Capacity</label>
+                                <input type="number" name="capacity" id="add-capacity" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-success">Add Warehouse</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
             <!-- Edit Modal -->
             <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -143,6 +175,13 @@ try {
 
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
             <script>
+                function showAddModal() {
+                    const modal = new bootstrap.Modal(document.getElementById('addModal'));
+                    document.getElementById('add-location').value = '';
+                    document.getElementById('add-capacity').value = '';
+                    modal.show();
+                }
+
                 function editWarehouse(warehouseId, location, capacity) {
                     const modal = new bootstrap.Modal(document.getElementById('editModal'));
                     document.getElementById('edit-warehouse-id').value = warehouseId;
