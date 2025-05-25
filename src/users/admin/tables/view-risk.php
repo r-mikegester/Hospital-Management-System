@@ -6,14 +6,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     $name = $_POST['name'];
     $description = $_POST['description'];
     $probability = $_POST['probability'];
-    $impact = $_POST['impact'];
+    $impact_level = $_POST['impact_level'];
     $mitigation_plan = $_POST['mitigation_plan'];
     $project_id = $_POST['project_id'];
 
     if ($_POST['action'] === 'add') {
         try {
-            $stmt = $pdo->prepare("INSERT INTO risks (name, description, probability, impact, mitigation_plan, project_id) VALUES (?, ?, ?, ?, ?, ?)");
-            $stmt->execute([$name, $description, $probability, $impact, $mitigation_plan, $project_id]);
+            $stmt = $pdo->prepare("INSERT INTO risks (name, description, probability, impact_level, mitigation_plan, project_id) VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt->execute([$name, $description, $probability, $impact_level, $mitigation_plan, $project_id]);
             header("Location: " . $_SERVER['PHP_SELF']);
             exit;
         } catch (PDOException $e) {
@@ -22,21 +22,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     }
 
     if ($_POST['action'] === 'edit') {
-        try {
-            $stmt = $pdo->prepare("UPDATE risks SET name = ?, description = ?, probability = ?, impact = ?, mitigation_plan = ?, project_id = ? WHERE id = ?");
-            $stmt->execute([$name, $description, $probability, $impact, $mitigation_plan, $project_id, $_POST['risk_id']]);
-            header("Location: " . $_SERVER['PHP_SELF']);
-            exit;
-        } catch (PDOException $e) {
-            die("Error: " . $e->getMessage());
-        }
+    try {
+        $stmt = $pdo->prepare("UPDATE risks SET name = ?, description = ?, probability = ?, impact_level = ?, mitigation_plan = ?, project_id = ? WHERE risks_id = ?");
+        $stmt->execute([$name, $description, $probability, $impact_level, $mitigation_plan, $project_id, $_POST['risk_id']]);
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit;
+    } catch (PDOException $e) {
+        die("Error: " . $e->getMessage());
     }
+}
+
 }
 
 // Load a risk for editing
 if (isset($_GET['edit_id'])) {
     try {
-        $stmt = $pdo->prepare("SELECT * FROM risks WHERE id = ?");
+        $stmt = $pdo->prepare("SELECT * FROM risks WHERE risks_id = ?");
         $stmt->execute([$_GET['edit_id']]);
         $riskToEdit = $stmt->fetch(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
@@ -49,7 +50,7 @@ if (isset($_GET['delete_id'])) {
     $delete_id = intval($_GET['delete_id']); // Convert to integer for safety
 
     try {
-        $stmt = $pdo->prepare("DELETE FROM risks WHERE id = ?");
+        $stmt = $pdo->prepare("DELETE FROM risks WHERE risks_id = ?");
         $stmt->execute([$delete_id]);
 
         // Redirect to avoid form resubmission
@@ -62,7 +63,7 @@ if (isset($_GET['delete_id'])) {
 
 // Fetch all risks
 try {
-    $stmt = $pdo->prepare("SELECT r.*, p.name AS project_name FROM risks r JOIN project p ON r.project_id = p.id");
+    $stmt = $pdo->prepare("SELECT r.*, p.name AS project_name FROM risks r JOIN project p ON r.project_id = p.project_id");
     $stmt->execute();
     $risks = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
@@ -115,7 +116,7 @@ try {
                             <input type="text" name="probability" class="form-control" placeholder="Probability" required>
                         </div>
                         <div class="col-md-2">
-                            <input type="text" name="impact" class="form-control" placeholder="Impact" required>
+                            <input type="text" name="impact_level" class="form-control" placeholder="impact_level" required>
                         </div>
                         <div class="col-md-3">
                             <input type="text" name="mitigation_plan" class="form-control" placeholder="Mitigation Plan" required>
@@ -124,7 +125,7 @@ try {
                             <select name="project_id" class="form-control" required>
                                 <option value="" disabled selected>Select Project</option>
                                 <?php foreach ($projects as $project): ?>
-                                    <option value="<?= $project['id'] ?>"><?= htmlspecialchars($project['name']) ?></option>
+                                    <option value="<?= $project['project_id'] ?>"><?= htmlspecialchars($project['name']) ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -142,7 +143,7 @@ try {
                             <th>Name</th>
                             <th>Description</th>
                             <th>Probability</th>
-                            <th>Impact</th>
+                            <th>impact_level</th>
                             <th>Mitigation Plan</th>
                             <th>Project</th>
                             <th>Actions</th>
@@ -151,26 +152,26 @@ try {
                     <tbody>
                         <?php foreach ($risks as $risk): ?>
                             <tr>
-                                <td><?= htmlspecialchars($risk['id']) ?></td>
+                                <td><?= htmlspecialchars($risk['risks_id']) ?></td>
                                 <td><?= htmlspecialchars($risk['name']) ?></td>
                                 <td><?= htmlspecialchars($risk['description']) ?></td>
                                 <td><?= htmlspecialchars($risk['probability']) ?></td>
-                                <td><?= htmlspecialchars($risk['impact']) ?></td>
+                                <td><?= htmlspecialchars($risk['impact_level']) ?></td>
                                 <td><?= htmlspecialchars($risk['mitigation_plan']) ?></td>
                                 <td><?= htmlspecialchars($risk['project_name']) ?></td>
                                 <td>
                                     <a href="#"
                                         class="btn btn-warning btn-sm"
                                         onclick="editRisk(
-                        <?= $risk['id'] ?>,
+                        <?= $risk['risks_id'] ?>,
                         '<?= addslashes($risk['name']) ?>',
                         '<?= addslashes($risk['description']) ?>',
                         '<?= addslashes($risk['probability']) ?>',
-                        '<?= addslashes($risk['impact']) ?>',
+                        '<?= addslashes($risk['impact_level']) ?>',
                         '<?= addslashes($risk['mitigation_plan']) ?>',
                         <?= $risk['project_id'] ?>
                     )">Edit</a>
-                                    <a href="?delete_id=<?= $risk['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</a>
+                                    <a href="?delete_id=<?= $risk['risks_id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</a>
 
                                 </td>
                             </tr>
@@ -204,8 +205,8 @@ try {
                             <input type="text" name="probability" id="edit-probability" class="form-control" required>
                         </div>
                         <div class="mb-3">
-                            <label for="edit-impact" class="form-label">Impact</label>
-                            <input type="text" name="impact" id="edit-impact" class="form-control" required>
+                            <label for="edit-impact_level" class="form-label">impact_level</label>
+                            <input type="text" name="impact_level" id="edit-impact_level" class="form-control" required>
                         </div>
                         <div class="mb-3">
                             <label for="edit-mitigation_plan" class="form-label">Mitigation Plan</label>
@@ -216,7 +217,7 @@ try {
                             <select name="project_id" id="edit-project_id" class="form-control" required>
                                 <option value="" disabled>Select Project</option>
                                 <?php foreach ($projects as $project): ?>
-                                    <option value="<?= $project['id'] ?>"><?= htmlspecialchars($project['name']) ?></option>
+                                    <option value="<?= $project['project_id'] ?>"><?= htmlspecialchars($project['name']) ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -231,13 +232,13 @@ try {
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
         <script>
-            function editRisk(id, name, description, probability, impact, mitigation_plan, project_id) {
+            function editRisk(id, name, description, probability, impact_level, mitigation_plan, project_id) {
                 const modal = new bootstrap.Modal(document.getElementById('editModal'));
                 document.getElementById('edit-id').value = id;
                 document.getElementById('edit-name').value = name;
                 document.getElementById('edit-description').value = description;
                 document.getElementById('edit-probability').value = probability;
-                document.getElementById('edit-impact').value = impact;
+                document.getElementById('edit-impact_level').value = impact_level;
                 document.getElementById('edit-mitigation_plan').value = mitigation_plan;
                 document.getElementById('edit-project_id').value = project_id;
                 modal.show();
