@@ -18,6 +18,7 @@ include(($_SERVER['DOCUMENT_ROOT'] . '/Logistics/config/config.php'));
             </button> -->
             <img src="/Logistics/public/imgs/logo.png"  alt="logo" class="size-40">
         </div>
+        <div>Logistics1</div>
         <div class="relative">
             <span class="absolute inset-y-0 left-0 flex items-center py-4">
                 <button type="submit" class="p-2 focus:outline-none focus:ring">
