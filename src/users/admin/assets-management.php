@@ -1,22 +1,26 @@
 <?php
 include($_SERVER['DOCUMENT_ROOT'] . '/Logistics/config/config.php');
 
-// Fetching data related to assets, tasks, and employees
 try {
-    $stmt = $pdo->prepare("
-        SELECT 
-            (SELECT COUNT(*) FROM asset) AS total_assets,
-            (SELECT COUNT(*) FROM task) AS total_tasks,
-            (SELECT COUNT(*) FROM employee) AS total_employees
-    ");
-    $stmt->execute();
-    $data = $stmt->fetch(PDO::FETCH_ASSOC);
+    // Fetch data counts from the provided schema
+    $stmt = $pdo->query("SELECT COUNT(*) AS total FROM asset");
+    $totalAssets = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
 
-    $totalAssets = $data['total_assets'];
-    $totalTasks = $data['total_tasks'];
-    $totalEmployees = $data['total_employees'];
+    $stmt = $pdo->query("SELECT COUNT(*) AS total FROM warehouse");
+    $totalWarehouses = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+
+    $stmt = $pdo->query("SELECT COUNT(*) AS total FROM employee");
+    $totalEmployees = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+
+    $stmt = $pdo->query("SELECT COUNT(*) AS total FROM maintenance_log");
+    $totalMaintenanceLogs = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+
+    $stmt = $pdo->query("SELECT COUNT(*) AS total FROM asset_log");
+    $totalAssetLogs = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+
 } catch (PDOException $e) {
-    die("Error: " . $e->getMessage());
+    echo "Query error: " . $e->getMessage();
+    exit;
 }
 ?>
 
@@ -46,71 +50,122 @@ try {
             </aside>
 
             <main class="flex-1 mt-20 p-6">
-                <div>
+                <div class="">
                     <div class="mb-10">
                         <h1 class="text-3xl font-bold">Asset Management Dashboard</h1>
                     </div>
-                    <div class="grid grid-cols-3 gap-10">
-                        <!-- Total Assets Card -->
+                    <div class="grid grid-cols-5 gap-8">
+                        <!-- Total Assets -->
                         <div class="shadow-2xl bg-gray-200 border border-gray-200 rounded-2xl flex justify-between items-center px-6 py-4">
-                            <div class="flex space-x-3">
-                                <span class="iconify text-blue-500 text-3xl" data-icon="mdi:folder-outline"></span>
+                            <div class="flex space-x-3 items-center">
+                                <span class="iconify text-indigo-500 text-3xl" data-icon="mdi:package-variant"></span>
                                 <div class="text-3xl font-semibold">Total Assets</div>
                             </div>
                             <div class="text-right">
-                                <div class="text-3xl bg-gray-400 border border-gray-500 p-3 rounded-lg font-semibold"><?php echo $totalAssets; ?></div>
+                                <div class="text-3xl bg-gray-400 border border-gray-500 p-3 rounded-lg font-semibold">
+                                    <?php echo $totalAssets; ?>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Total Tasks Card -->
+                        <!-- Total Warehouses -->
                         <div class="shadow-2xl bg-gray-200 border border-gray-200 rounded-2xl flex justify-between items-center px-6 py-4">
-                            <div class="flex space-x-3">
-                                <span class="iconify text-green-500 text-3xl" data-icon="mdi:clipboard-text-outline"></span>
-                                <div class="text-3xl font-semibold">Total Tasks</div>
+                            <div class="flex space-x-3 items-center">
+                                <span class="iconify text-red-500 text-3xl" data-icon="mdi:warehouse"></span>
+                                <div class="text-3xl font-semibold">Total Warehouses</div>
                             </div>
                             <div class="text-right">
-                                <div class="text-3xl bg-gray-400 border border-gray-500 p-3 rounded-lg font-semibold"><?php echo $totalTasks; ?></div>
+                                <div class="text-3xl bg-gray-400 border border-gray-500 p-3 rounded-lg font-semibold">
+                                    <?php echo $totalWarehouses; ?>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Total Employees Card -->
+                        <!-- Total Employees -->
                         <div class="shadow-2xl bg-gray-200 border border-gray-200 rounded-2xl flex justify-between items-center px-6 py-4">
-                            <div class="flex space-x-3">
-                                <span class="iconify text-orange-500 text-3xl" data-icon="mdi:account-group-outline"></span>
+                            <div class="flex space-x-3 items-center">
+                                <span class="iconify text-yellow-500 text-3xl" data-icon="mdi:account"></span>
                                 <div class="text-3xl font-semibold">Total Employees</div>
                             </div>
                             <div class="text-right">
-                                <div class="text-3xl bg-gray-400 border border-gray-500 p-3 rounded-lg font-semibold"><?php echo $totalEmployees; ?></div>
+                                <div class="text-3xl bg-gray-400 border border-gray-500 p-3 rounded-lg font-semibold">
+                                    <?php echo $totalEmployees; ?>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Navigation Links -->
+                        <!-- Total Maintenance Logs -->
+                        <div class="shadow-2xl bg-gray-200 border border-gray-200 rounded-2xl flex justify-between items-center px-6 py-4">
+                            <div class="flex space-x-3 items-center">
+                                <span class="iconify text-green-500 text-3xl" data-icon="mdi:tools"></span>
+                                <div class="text-3xl font-semibold">Maintenance Logs</div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-3xl bg-gray-400 border border-gray-500 p-3 rounded-lg font-semibold">
+                                    <?php echo $totalMaintenanceLogs; ?>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Total Asset Logs -->
+                        <div class="shadow-2xl bg-gray-200 border border-gray-200 rounded-2xl flex justify-between items-center px-6 py-4">
+                            <div class="flex space-x-3 items-center">
+                                <span class="iconify text-purple-500 text-3xl" data-icon="mdi:file-document"></span>
+                                <div class="text-3xl font-semibold">Asset Logs</div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-3xl bg-gray-400 border border-gray-500 p-3 rounded-lg font-semibold">
+                                    <?php echo $totalAssetLogs; ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-5 gap-10 mt-12">
+                        <!-- Assets Link -->
                         <a href="/Logistics/src/users/admin/tables/view-assets.php" class="shadow-2xl bg-white border hover:bg-gray-400 border-gray-200 rounded-2xl flex flex-col justify-center items-center h-40">
-                            <span class="iconify text-gray-700 text-5xl" data-icon="mdi:file-document-edit-outline"></span>
-                            <div class="text-3xl font-semibold">View Assets</div>
+                            <span class="iconify text-gray-700 text-5xl" data-icon="mdi:package-variant"></span>
+                            <div class="text-3xl font-semibold mt-4">Assets</div>
                         </a>
-                        <a href="/Logistics/src/users/admin/tables/view-tasks.php" class="shadow-2xl bg-white border hover:bg-gray-400 border-gray-200 rounded-2xl flex flex-col justify-center items-center h-40">
-                            <span class="iconify text-gray-700 text-5xl" data-icon="mdi:clipboard-list-outline"></span>
-                            <div class="text-3xl font-semibold">Warehouse Management</div>
+
+                        <!-- Warehouses Link -->
+                        <a href="/Logistics/src/users/admin/tables/view-warehouse.php" class="shadow-2xl bg-white border hover:bg-gray-400 border-gray-200 rounded-2xl flex flex-col justify-center items-center h-40">
+                            <span class="iconify text-gray-700 text-5xl" data-icon="mdi:warehouse"></span>
+                            <div class="text-3xl font-semibold mt-4">Warehouses</div>
                         </a>
+
+                        <!-- Employees Link -->
                         <a href="/Logistics/src/users/admin/tables/view-employees.php" class="shadow-2xl bg-white border hover:bg-gray-400 border-gray-200 rounded-2xl flex flex-col justify-center items-center h-40">
-                            <span class="iconify text-gray-700 text-5xl" data-icon="mdi:account-multiple-outline"></span>
-                            <div class="text-3xl font-semibold">Maintenance Management</div>
+                            <span class="iconify text-gray-700 text-5xl" data-icon="mdi:account"></span>
+                            <div class="text-3xl font-semibold mt-4">Employees</div>
                         </a>
-                        <a href="/Logistics/src/users/admin/tables/view-employees.php" class="shadow-2xl bg-white border hover:bg-gray-400 border-gray-200 rounded-2xl flex flex-col justify-center items-center h-40">
-                            <span class="iconify text-gray-700 text-5xl" data-icon="mdi:account-multiple-outline"></span>
-                            <div class="text-3xl font-semibold">Employee Management</div>
+
+                        <!-- Maintenance Logs Link -->
+                        <a href="/Logistics/src/users/admin/tables/view-maintenance-logs.php" class="shadow-2xl bg-white border hover:bg-gray-400 border-gray-200 rounded-2xl flex flex-col justify-center items-center h-40">
+                            <span class="iconify text-gray-700 text-5xl" data-icon="mdi:tools"></span>
+                            <div class="text-3xl font-semibold mt-4">Maintenance Logs</div>
                         </a>
-                        <a href="/Logistics/src/users/admin/tables/view-employees.php" class="shadow-2xl bg-white border hover:bg-gray-400 border-gray-200 rounded-2xl flex flex-col justify-center items-center h-40">
-                            <span class="iconify text-gray-700 text-5xl" data-icon="mdi:account-multiple-outline"></span>
-                            <div class="text-3xl font-semibold">Asset Log</div>
+
+                        <!-- Asset Logs Link -->
+                        <a href="/Logistics/src/users/admin/tables/view-asset-logs.php" class="shadow-2xl bg-white border hover:bg-gray-400 border-gray-200 rounded-2xl flex flex-col justify-center items-center h-40">
+                            <span class="iconify text-gray-700 text-5xl" data-icon="mdi:file-document"></span>
+                            <div class="text-3xl font-semibold mt-4">Asset Logs</div>
                         </a>
-                        
                     </div>
                 </div>
             </main>
         </div>
     </div>
+
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.style.width = sidebar.style.width === '0px' ? '250px' : '0px';
+            sidebarToggle.textContent = sidebar.style.width === '0px' ? '☰' : '✕';
+        });
+    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
