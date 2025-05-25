@@ -5,12 +5,11 @@ include($_SERVER['DOCUMENT_ROOT'] . '/Logistics/config/config.php');
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     $location = $_POST['location'];
     $capacity = $_POST['capacity'];
-    $manager_id = $_POST['manager_id'];
 
     if ($_POST['action'] === 'add') {
         try {
-            $stmt = $pdo->prepare("INSERT INTO warehouse (location, capacity, manager_id) VALUES (?, ?, ?)");
-            $stmt->execute([$location, $capacity, $manager_id]);
+            $stmt = $pdo->prepare("INSERT INTO warehouse (location, capacity) VALUES (?, ?)");
+            $stmt->execute([$location, $capacity]);
             header("Location: " . $_SERVER['PHP_SELF']); // Refresh the page
             exit;
         } catch (PDOException $e) {
@@ -22,8 +21,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     if ($_POST['action'] === 'edit') {
         $warehouse_id = $_POST['warehouse_id'];
         try {
-            $stmt = $pdo->prepare("UPDATE warehouse SET location = ?, capacity = ?, manager_id = ? WHERE warehouse_id = ?");
-            $stmt->execute([$location, $capacity, $manager_id, $warehouse_id]);
+            $stmt = $pdo->prepare("UPDATE warehouse SET location = ?, capacity = ? WHERE warehouse_id = ?");
+            $stmt->execute([$location, $capacity, $warehouse_id]);
             header("Location: " . $_SERVER['PHP_SELF']); // Refresh the page
             exit;
         } catch (PDOException $e) {
@@ -44,18 +43,9 @@ if (isset($_GET['delete_id'])) {
     }
 }
 
-// Fetch all managers for the dropdown
+// Fetch all warehouses (no join since no managers)
 try {
-    $stmt = $pdo->prepare("SELECT manager_id, manager_name FROM managers");
-    $stmt->execute();
-    $managers = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    die("Error: " . $e->getMessage());
-}
-
-// Fetch all warehouse with manager names using JOIN
-try {
-    $stmt = $pdo->prepare("SELECT w.*, m.manager_name FROM warehouse w JOIN managers m ON w.manager_id = m.manager_id");
+    $stmt = $pdo->prepare("SELECT * FROM warehouse");
     $stmt->execute();
     $warehouse = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
@@ -91,32 +81,29 @@ try {
                                 <th>Warehouse ID</th>
                                 <th>Location</th>
                                 <th>Capacity</th>
-                                <th>Manager Name</th>
                                 <th>Created At</th>
                                 <th>Updated At</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($warehouse as $warehouse): ?>
+                            <?php foreach ($warehouse as $w): ?>
                                 <tr>
-                                    <td><?= $warehouse['warehouse_id'] ?></td>
-                                    <td><?= htmlspecialchars($warehouse['location']) ?></td>
-                                    <td><?= $warehouse['capacity'] ?></td>
-                                    <td><?= htmlspecialchars($warehouse['manager_name']) ?></td>
-                                    <td><?= $warehouse['created_at'] ?></td>
-                                    <td><?= $warehouse['updated_at'] ?></td>
+                                    <td><?= $w['warehouse_id'] ?></td>
+                                    <td><?= htmlspecialchars($w['location']) ?></td>
+                                    <td><?= $w['capacity'] ?></td>
+                                    <td><?= $w['created_at'] ?></td>
+                                    <td><?= $w['updated_at'] ?></td>
                                     <td>
                                         <!-- Edit Button -->
                                         <button class="btn btn-warning btn-sm" onclick="editWarehouse(
-                                            <?= $warehouse['warehouse_id'] ?>,
-                                            '<?= htmlspecialchars($warehouse['location']) ?>',
-                                            <?= $warehouse['capacity'] ?>,
-                                            <?= $warehouse['manager_id'] ?>
+                                            <?= $w['warehouse_id'] ?>,
+                                            '<?= htmlspecialchars($w['location']) ?>',
+                                            <?= $w['capacity'] ?>
                                         )">Edit</button>
 
                                         <!-- Delete Button -->
-                                        <a href="?delete_id=<?= $warehouse['warehouse_id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this warehouse?')">Delete</a>
+                                        <a href="?delete_id=<?= $w['warehouse_id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this warehouse?')">Delete</a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
@@ -145,16 +132,6 @@ try {
                                 <label for="edit-capacity" class="form-label">Capacity</label>
                                 <input type="number" name="capacity" id="edit-capacity" class="form-control" required>
                             </div>
-                            <div class="mb-3">
-                                <label for="edit-manager-id" class="form-label">Manager</label>
-                                <select name="manager_id" id="edit-manager-id" class="form-select" required>
-                                    <?php foreach ($managers as $manager): ?>
-                                        <option value="<?= htmlspecialchars($manager['manager_id']) ?>">
-                                            <?= htmlspecialchars($manager['manager_name']) ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -166,12 +143,11 @@ try {
 
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
             <script>
-                function editWarehouse(warehouseId, location, capacity, managerId) {
+                function editWarehouse(warehouseId, location, capacity) {
                     const modal = new bootstrap.Modal(document.getElementById('editModal'));
                     document.getElementById('edit-warehouse-id').value = warehouseId;
                     document.getElementById('edit-location').value = location;
                     document.getElementById('edit-capacity').value = capacity;
-                    document.getElementById('edit-manager-id').value = managerId;
                     modal.show();
                 }
             </script>
