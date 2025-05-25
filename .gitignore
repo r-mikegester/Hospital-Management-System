@@ -27,3 +27,4 @@ public/css/output.css
 
 # Ignore database dumps if not needed
 db/*.sql
+src/users/admin/tables/view-asset.php
