@@ -8,7 +8,7 @@ if (session_status() === PHP_SESSION_NONE) {
 $userEmail = isset($_SESSION['email']) ? htmlspecialchars($_SESSION['email']) : 'Guest';
 ?>
 
-<div class="navbar white text-[#4a628a] px-4 z-10 absolute top-0 w-full shadow-2xl">
+<div class="navbar white text-[#4a628a] px-4 z-10 absolute top-0 w-full ">
     <div class="flex items-center justify-between w-full">
 
         <!-- Navbar Title -->
