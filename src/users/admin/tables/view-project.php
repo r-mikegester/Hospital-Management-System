@@ -1,71 +1,59 @@
 <?php
 include($_SERVER['DOCUMENT_ROOT'] . '/Logistics/config/config.php');
 
-// Handle form submission for adding a project
+// Handle form submission for adding or editing a project
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
-    $name = $_POST['name'];
+    $name = trim($_POST['name']);
     $start_date = $_POST['start_date'];
     $end_date = $_POST['end_date'];
     $status = $_POST['status'];
 
-    if ($_POST['action'] === 'add') {
-        try {
-            $stmt = $pdo->prepare("INSERT INTO project (name, start_date, end_date, status) VALUES (?, ?, ?, ?)");
-            $stmt->execute([$name, $start_date, $end_date, $status]);
-            header("Location: " . $_SERVER['PHP_SELF']); // Refresh the page
-            exit;
-        } catch (PDOException $e) {
-            die("Error: " . $e->getMessage());
-        }
+    if (empty($name) || empty($start_date) || empty($end_date) || empty($status)) {
+        die("All fields are required.");
     }
 
-    // Handle editing a project
-    if ($_POST['action'] === 'edit') {
-        $id = $_POST['id'];
-        try {
-            $stmt = $pdo->prepare("UPDATE project SET name = ?, start_date = ?, end_date = ?, status = ? WHERE id = ?");
-            $stmt->execute([$name, $start_date, $end_date, $status, $id]);
-            header("Location: " . $_SERVER['PHP_SELF']); // Refresh the page
-            exit;
-        } catch (PDOException $e) {
-            die("Error: " . $e->getMessage());
+    try {
+        if ($_POST['action'] === 'add') {
+            $stmt = $pdo->prepare("INSERT INTO project (name, start_date, end_date, status) VALUES (?, ?, ?, ?)");
+            $stmt->execute([$name, $start_date, $end_date, $status]);
+        } elseif ($_POST['action'] === 'edit') {
+            $project_id = $_POST['id'];
+            $stmt = $pdo->prepare("UPDATE project SET name = ?, start_date = ?, end_date = ?, status = ? WHERE project_id = ?");
+            $stmt->execute([$name, $start_date, $end_date, $status, $project_id]);
         }
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit;
+    } catch (PDOException $e) {
+        die("Error: " . $e->getMessage());
     }
 }
 
 // Handle deletion of a project
 if (isset($_GET['delete_id'])) {
     try {
-        $pdo->beginTransaction(); // Start a transaction
-
-        // Delete related risks
+        $pdo->beginTransaction();
         $stmt = $pdo->prepare("DELETE FROM risks WHERE project_id = ?");
         $stmt->execute([$_GET['delete_id']]);
-
-        // Delete the project
-        $stmt = $pdo->prepare("DELETE FROM project WHERE id = ?");
+        $stmt = $pdo->prepare("DELETE FROM project WHERE project_id = ?");
         $stmt->execute([$_GET['delete_id']]);
-
-        $pdo->commit(); // Commit the transaction
+        $pdo->commit();
         header("Location: " . $_SERVER['PHP_SELF']);
         exit;
     } catch (PDOException $e) {
-        $pdo->rollBack(); // Rollback the transaction if something goes wrong
+        $pdo->rollBack();
         die("Error: " . $e->getMessage());
     }
 }
 
-
 // Fetch all projects
 try {
-    $stmt = $pdo->prepare("SELECT * FROM project");
+    $stmt = $pdo->prepare("SELECT project_id, name, start_date, end_date, status, created_at, updated_at FROM project");
     $stmt->execute();
     $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
     die("Error: " . $e->getMessage());
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -131,8 +119,8 @@ try {
                         <tbody>
                             <?php foreach ($projects as $project): ?>
                                 <tr>
-                                    <td><?= $project['id'] ?></td>
-                                    <td><?= $project['name'] ?></td>
+                                    <td><?= $project['project_id'] ?></td>
+                                    <td><?= htmlspecialchars($project['name']) ?></td>
                                     <td><?= $project['start_date'] ?></td>
                                     <td><?= $project['end_date'] ?></td>
                                     <td><?= $project['status'] ?></td>
@@ -140,10 +128,10 @@ try {
                                     <td><?= $project['updated_at'] ?></td>
                                     <td>
                                         <!-- Edit Button -->
-                                        <button class="btn btn-warning btn-sm " onclick="editProject(<?= $project['id'] ?>, '<?= htmlspecialchars($project['name']) ?>', '<?= $project['start_date'] ?>', '<?= $project['end_date'] ?>', '<?= $project['status'] ?>')">Edit</button>
+                                        <button class="btn btn-warning btn-sm" onclick="editProject(<?= $project['project_id'] ?>, '<?= htmlspecialchars($project['name'], ENT_QUOTES) ?>', '<?= $project['start_date'] ?>', '<?= $project['end_date'] ?>', '<?= $project['status'] ?>')">Edit</button>
 
                                         <!-- Delete Button -->
-                                        <a href="?delete_id=<?= $project['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this project?')">Delete</a>
+                                        <a href="?delete_id=<?= $project['project_id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this project?')">Delete</a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
