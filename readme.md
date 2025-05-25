@@ -56,29 +56,7 @@ $ then run your xampp and preview
 
 ---
 
-### Step 3: Set Up the Database
-
-1. Import the database schema:
-
-   ```bash
-   $ mysql -u root -p logistics_db < /path/to/schema.sql
-   ```
-
-2. Replace `/path/to/schema.sql` with the path to your SQL schema file.
-
----
-
-### Step 4: Install PHP Dependencies
-
-Run the following command to install PHP dependencies using **Composer**:
-
-```bash
-$ composer install
-```
-
----
-
-### Step 5: Install Front-End Dependencies
+### Step 3: Install Front-End Dependencies
 
 Install the required front-end packages using npm:
 
@@ -86,63 +64,16 @@ Install the required front-end packages using npm:
 $ npm install
 ```
 
----
-
-### Step 6: Configure Apache/Nginx
-
-#### Apache Configuration
-
-Add the following configuration to your Apache virtual host file:
-
-```apache
-<VirtualHost *:80>
-    ServerName logistics.local
-    DocumentRoot /path/to/Logistics/public
-
-    <Directory /path/to/Logistics/public>
-        AllowOverride All
-        Require all granted
-    </Directory>
-
-    ErrorLog ${APACHE_LOG_DIR}/logistics_error.log
-    CustomLog ${APACHE_LOG_DIR}/logistics_access.log combined
-</VirtualHost>
-```
-
-#### Nginx Configuration
-
-```nginx
-server {
-    listen 80;
-    server_name logistics.local;
-
-    root /path/to/Logistics/public;
-    index index.php index.html index.htm;
-
-    location / {
-        try_files $uri $uri/ /index.php?$query_string;
-    }
-
-    location ~ \.php$ {
-        include snippets/fastcgi-php.conf;
-        fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-        include fastcgi_params;
-    }
-}
-```
-
 Restart your web server after adding the configuration.
 
 ---
 
-### Step 7: Run the Project
+### Step 4: Run the Project
 
 Access the project via your browser at:
 
 ```
-http://logistics.local
-```
+http://localhost/Logistics/login.php
 
 ---
 
