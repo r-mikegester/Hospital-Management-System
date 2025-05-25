@@ -135,7 +135,7 @@ try {
                         </a>
 
                         <!-- Employees Link -->
-                        <a href="/Logistics/src/users/admin/tables/view-employees.php" class="shadow-2xl bg-white border hover:bg-gray-400 border-gray-200 rounded-2xl flex flex-col justify-center items-center h-40">
+                        <a href="/Logistics/src/users/admin/tables/view-employee.php" class="shadow-2xl bg-white border hover:bg-gray-400 border-gray-200 rounded-2xl flex flex-col justify-center items-center h-40">
                             <span class="iconify text-gray-700 text-5xl" data-icon="mdi:account"></span>
                             <div class="text-3xl font-semibold mt-4">Employees</div>
                         </a>
