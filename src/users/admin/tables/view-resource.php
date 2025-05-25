@@ -1,6 +1,22 @@
 <?php
 include($_SERVER['DOCUMENT_ROOT'] . '/Logistics/config/config.php');
 
+// DELETE HANDLER
+if (isset($_GET['delete_id'])) {
+    $delete_id = $_GET['delete_id'];
+
+    try {
+        $stmt = $pdo->prepare("DELETE FROM resources WHERE resources_id = ?");
+        $stmt->execute([$delete_id]);
+
+        // Redirect to the same page without the query string to prevent resubmission
+        header("Location: " . strtok($_SERVER["REQUEST_URI"], '?'));
+        exit;
+    } catch (PDOException $e) {
+        die("Error deleting resource: " . $e->getMessage());
+    }
+}
+
 // Handle form submission for adding or editing a resource
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     $name = $_POST['name'];
@@ -42,7 +58,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         }
     }
 }
-
 
 // Fetch resources
 try {
@@ -104,9 +119,9 @@ try {
                         </div>
                         <div class="col-md-2">
                             <select name="project_id" class="form-control" required>
-                                <option value="" disabled>Select Project</option>
+                                <option value="" disabled selected>Select Project</option>
                                 <?php foreach ($projects as $project): ?>
-                                    <option value="<?= $project['id'] ?>"><?= $project['name'] ?></option>
+                                    <option value="<?= $project['project_id'] ?>"><?= htmlspecialchars($project['name']) ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -131,17 +146,17 @@ try {
                     <tbody>
                         <?php foreach ($resources as $resource): ?>
                             <tr>
-                                <td><?= $resource['id'] ?></td>
-                                <td><?= $resource['name'] ?></td>
-                                <td><?= $resource['type'] ?></td>
-                                <td><?= $resource['availability'] ?></td>
+                                <td><?= $resource['resources_id'] ?></td>
+                                <td><?= htmlspecialchars($resource['name']) ?></td>
+                                <td><?= htmlspecialchars($resource['type']) ?></td>
+                                <td><?= htmlspecialchars($resource['availability']) ?></td>
                                 <td><?= $resource['quantity'] ?></td>
-                                <td><?= $resource['project_id'] ?></td>
+                                <td><?= htmlspecialchars($resource['project_id']) ?></td>
                                 <td>
                                     <a href="#"
                                         class="btn btn-warning btn-sm"
                                         onclick="editResource(
-                                        <?= $resource['id'] ?>,
+                                        <?= $resource['resources_id'] ?>,
                                         '<?= htmlspecialchars($resource['name'], ENT_QUOTES) ?>',
                                         '<?= htmlspecialchars($resource['type'], ENT_QUOTES) ?>',
                                         '<?= htmlspecialchars($resource['availability'], ENT_QUOTES) ?>',
@@ -150,7 +165,7 @@ try {
                                         )">
                                         Edit
                                     </a>
-                                    <a href="?delete_id=<?= $resource['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</a>
+                                    <a href="?delete_id=<?= $resource['resources_id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -192,7 +207,7 @@ try {
                             <select name="project_id" id="edit-project_id" class="form-control" required>
                                 <option value="" disabled>Select Project</option>
                                 <?php foreach ($projects as $project): ?>
-                                    <option value="<?= $project['id'] ?>"><?= htmlspecialchars($project['name']) ?></option>
+                                    <option value="<?= $project['project_id'] ?>"><?= htmlspecialchars($project['name']) ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
