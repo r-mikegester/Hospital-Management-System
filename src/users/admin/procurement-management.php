@@ -108,7 +108,7 @@ try {
                          <!-- Procurement  -->
                         <a href="/Logistics/src/users/admin/tables/view-procurement.php" class="shadow-2xl bg-white border hover:bg-gray-400 border-gray-200 rounded-2xl flex flex-col justify-center items-center h-40">
                             <span class="iconify text-gray-700 text-5xl" data-icon="mdi:cart-outline"></span>
-                            <div class="text-3xl font-semibold mt-4">Procurement Item</div>
+                            <div class="text-3xl font-semibold mt-4">Procurement</div>
                         </a>
                         <!-- Procurement Link -->
                         <a href="/Logistics/src/users/admin/tables/view-procurement-item.php" class="shadow-2xl bg-white border hover:bg-gray-400 border-gray-200 rounded-2xl flex flex-col justify-center items-center h-40">
