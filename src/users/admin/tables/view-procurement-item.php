@@ -65,25 +65,11 @@ try {
 <head>
     <title>Procurement Items</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <style>
-        .table {
-            border: 1px solid #dee2e6;
-        }
-
-        .table td,
-        .table th {
-            text-align: center;
-            vertical-align: middle;
-        }
-
-        .btn-close {
-            color: #fff;
-        }
-    </style>
+    
 </head>
 
 <body>
-    <div class="relative min-h-screen max-h-screen overflow-auto flex flex-col">
+    <div class="relative min-h-screen flex flex-col">
         <?php include("../../../../components/head.php"); ?>
         <header>
             <?php include("../../../../components/navbar.php"); ?>
@@ -93,8 +79,9 @@ try {
                 <?php include("../../../../components/sidebar2.php"); ?>
             </aside>
 
-            <main class="flex-1 mt-20 p-6 overflow-auto">
-                <h1 class="text-3xl font-bold mb-4">Procurement Items</h1>
+            <div class="flex-1 mt-20 p-6">
+                <h1 class="text-3xl font-bold mb-10">Procurement Item</h1>
+                <div>
 
                 <!-- Add Item Button -->
                 <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addItemModal">Add Procurement Item</button>
