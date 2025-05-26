@@ -99,8 +99,8 @@ try {
                 <?php include("../../../../components/sidebar2.php"); ?>
             </aside>
             <div class="flex-1 mt-20 p-6">
-
-                <h1>Risk Management</h1>
+                <h1 class="text-3xl font-bold mb-10">Risk Management</h1>
+                <div>
 
                 <!-- Add Risk Form -->
                 <form method="POST" class="mb-4">
