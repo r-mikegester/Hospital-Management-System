@@ -95,7 +95,8 @@ try {
             </aside>
 
             <div class="flex-1 mt-20 p-6">
-                <h1>Progress Report Management</h1>
+                <h1 class="text-3xl font-bold mb-10">Progress Report</h1>
+                <div>
 
                 <!-- Add Progress Report Form -->
                 <form method="POST" class="mb-4">
