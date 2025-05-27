@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 26, 2025 at 06:18 PM
+-- Generation Time: May 28, 2025 at 12:30 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -81,6 +81,58 @@ CREATE TABLE `asset_log` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `asset_management_documents`
+--
+
+CREATE TABLE `asset_management_documents` (
+  `record_id` int(11) NOT NULL,
+  `asset_id` int(11) NOT NULL,
+  `document_name` varchar(255) NOT NULL,
+  `document_type` varchar(255) NOT NULL,
+  `associated_date` date NOT NULL,
+  `remarks` text DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bed_assignments`
+--
+
+CREATE TABLE `bed_assignments` (
+  `assignment_id` int(11) NOT NULL,
+  `bed_id` int(11) NOT NULL,
+  `patient_id` int(11) NOT NULL,
+  `assigned_date` datetime NOT NULL,
+  `discharge_date` datetime DEFAULT NULL,
+  `status` enum('Active','Discharged','Transferred') NOT NULL DEFAULT 'Active',
+  `notes` text DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bed_inventory`
+--
+
+CREATE TABLE `bed_inventory` (
+  `bed_id` int(11) NOT NULL,
+  `warehouse_id` int(11) NOT NULL,
+  `bed_number` varchar(50) NOT NULL,
+  `room_number` varchar(50) DEFAULT NULL,
+  `status` enum('Available','Allocated','Maintenance','Discarded') NOT NULL DEFAULT 'Available',
+  `condition` enum('New','Good','Fair','Poor') NOT NULL DEFAULT 'New',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `contracts`
 --
 
@@ -116,7 +168,58 @@ CREATE TABLE `employee` (
 --
 
 INSERT INTO `employee` (`employee_id`, `name`, `role`, `department`, `contact_info`, `created_at`, `updated_at`, `status`) VALUES
-(4, '	Alice Johnson', '	Software Engineer', 'IT', 'alice.johnson@email.com', '2025-05-25 20:02:35', '2025-05-25 20:02:35', 'Active');
+(4, '	Alice Johnson', '	Software Engineer', 'IT', 'alice.johnson@email.com', '2025-05-25 20:02:35', '2025-05-25 20:02:35', 'Active'),
+(5, '	Lisa Fernandez', 'Admin Staff', 'Administration', 'lisa.fernandez@hospital.com,', '2025-05-27 21:37:51', '2025-05-27 21:37:51', 'Resigned');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `hospital_suppliers`
+--
+
+CREATE TABLE `hospital_suppliers` (
+  `supplier_id` int(11) NOT NULL,
+  `company_name` varchar(255) NOT NULL,
+  `contact_person` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `phone` varchar(50) NOT NULL,
+  `address` text NOT NULL,
+  `status` enum('active','inactive') DEFAULT 'active',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `hospital_suppliers`
+--
+
+INSERT INTO `hospital_suppliers` (`supplier_id`, `company_name`, `contact_person`, `email`, `phone`, `address`, `status`, `created_at`) VALUES
+(1, '	MedSupply Co.', '	Jane Doe', 'jane.doe@medsupply.com', '0917-123-4567', '123 Health St., Cityville', 'active', '2025-05-27 21:54:30');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `hospital_supplies_inventory`
+--
+
+CREATE TABLE `hospital_supplies_inventory` (
+  `supply_id` int(11) NOT NULL,
+  `supply_name` varchar(255) NOT NULL,
+  `category` enum('linen','hospital wear','equipment','other') NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `unit` varchar(50) NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `manufacturer` varchar(255) DEFAULT NULL,
+  `supplier_id` int(11) NOT NULL,
+  `storage_location` varchar(255) NOT NULL,
+  `status` enum('In Stock','Out of Stock','Discontinued') DEFAULT 'In Stock'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `hospital_supplies_inventory`
+--
+
+INSERT INTO `hospital_supplies_inventory` (`supply_id`, `supply_name`, `category`, `quantity`, `unit`, `price`, `manufacturer`, `supplier_id`, `storage_location`, `status`) VALUES
+(1, 'Surgical Gloves', 'hospital wear', 500, 'boxes', 1200.00, 'MedEquip Inc.', 1, 'Warehouse A', 'In Stock');
 
 -- --------------------------------------------------------
 
@@ -138,6 +241,24 @@ CREATE TABLE `inventory_item` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `inventory_movements`
+--
+
+CREATE TABLE `inventory_movements` (
+  `movement_id` int(11) NOT NULL,
+  `item_type` enum('Bed','Linen','Other') NOT NULL,
+  `item_id` int(11) NOT NULL,
+  `from_warehouse_id` int(11) DEFAULT NULL,
+  `to_warehouse_id` int(11) DEFAULT NULL,
+  `quantity` int(11) NOT NULL,
+  `movement_type` enum('Inbound','Outbound','Transfer') NOT NULL,
+  `movement_date` timestamp NOT NULL DEFAULT current_timestamp(),
+  `remarks` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `item_log`
 --
 
@@ -148,6 +269,24 @@ CREATE TABLE `item_log` (
   `date` date DEFAULT NULL,
   `details` text DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `linen_inventory`
+--
+
+CREATE TABLE `linen_inventory` (
+  `linen_id` int(11) NOT NULL,
+  `warehouse_id` int(11) NOT NULL,
+  `item_name` varchar(100) NOT NULL,
+  `quantity` int(11) NOT NULL DEFAULT 0,
+  `condition` enum('New','Good','Fair','Poor') NOT NULL DEFAULT 'New',
+  `status` enum('Available','In Use','In Laundry','Discarded') NOT NULL DEFAULT 'Available',
+  `last_washed_date` datetime DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -210,6 +349,38 @@ CREATE TABLE `maintenance_log` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `maintenance_schedule`
+--
+
+CREATE TABLE `maintenance_schedule` (
+  `schedule_id` int(11) NOT NULL,
+  `maintenance_id` int(11) NOT NULL,
+  `asset_id` int(11) NOT NULL,
+  `frequency` varchar(50) NOT NULL COMMENT 'e.g., Daily, Weekly, Monthly, Quarterly, Annually',
+  `next_schedule_date` date NOT NULL,
+  `last_schedule_date` date DEFAULT NULL,
+  `notes` text DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `patients`
+--
+
+CREATE TABLE `patients` (
+  `patient_id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `contact_info` varchar(255) DEFAULT NULL,
+  `date_of_birth` date DEFAULT NULL,
+  `medical_history` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `procurement`
 --
 
@@ -220,6 +391,14 @@ CREATE TABLE `procurement` (
   `status` enum('Pending','Approved','Rejected','Completed') NOT NULL DEFAULT 'Pending',
   `supplier_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `procurement`
+--
+
+INSERT INTO `procurement` (`procurement_id`, `date`, `total_amount`, `status`, `supplier_id`) VALUES
+(1, '2025-05-27', 0.00, 'Pending', 1),
+(2, '2025-05-28', 0.00, 'Pending', 2);
 
 -- --------------------------------------------------------
 
@@ -236,6 +415,14 @@ CREATE TABLE `procurement_item` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `procurement_item`
+--
+
+INSERT INTO `procurement_item` (`item_id`, `procurement_id`, `item_name`, `quantity`, `unit_price`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Surgical Masks', 500, 1.50, '2025-05-27 19:29:32', '2025-05-27 19:29:32'),
+(2, 2, 'Hospital Beds', 5, 20000.00, '2025-05-27 21:42:31', '2025-05-27 21:42:31');
 
 -- --------------------------------------------------------
 
@@ -258,7 +445,8 @@ CREATE TABLE `progress_report` (
 --
 
 INSERT INTO `progress_report` (`progress_report_id`, `project_id`, `submission_date`, `progress_status`, `details`, `created_at`, `updated_at`) VALUES
-(2, 1, '2025-05-26', 'Pending', 'Initial setup completed. Awaiting team review.', '2025-05-25 20:28:54', '2025-05-25 20:28:54');
+(2, 1, '2025-05-26', 'Pending', 'Initial setup completed. Awaiting team review.', '2025-05-25 20:28:54', '2025-05-25 20:28:54'),
+(3, 2, '2025-05-28', 'Pending', 'Final system testing and implementation completed.', '2025-05-27 21:40:07', '2025-05-27 21:40:07');
 
 -- --------------------------------------------------------
 
@@ -281,7 +469,35 @@ CREATE TABLE `project` (
 --
 
 INSERT INTO `project` (`project_id`, `name`, `start_date`, `end_date`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'New Patient Management System', '2025-05-26', '2025-05-28', 'Pending', '2025-05-25 19:28:19', '2025-05-25 19:28:19');
+(1, 'New Patient Management System', '2025-05-26', '2025-05-28', 'Pending', '2025-05-25 19:28:19', '2025-05-25 19:28:19'),
+(2, 'Patient Record System', '2025-05-28', '2025-05-29', 'Pending', '2025-05-27 21:36:05', '2025-05-27 21:36:05');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `project_documentation`
+--
+
+CREATE TABLE `project_documentation` (
+  `doc_id` int(11) NOT NULL,
+  `project_id` int(11) NOT NULL,
+  `doc_name` varchar(255) NOT NULL,
+  `doc_type` varchar(100) NOT NULL,
+  `submission_date` date NOT NULL,
+  `review_status` enum('pending','approved','rejected') DEFAULT 'pending',
+  `compliance_status` enum('compliant','non-compliant') DEFAULT 'compliant',
+  `last_reviewed_by` varchar(255) DEFAULT NULL,
+  `last_reviewed_date` date DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `project_documentation`
+--
+
+INSERT INTO `project_documentation` (`doc_id`, `project_id`, `doc_name`, `doc_type`, `submission_date`, `review_status`, `compliance_status`, `last_reviewed_by`, `last_reviewed_date`, `created_at`, `updated_at`) VALUES
+(1, 1, 'System Requirements', 'Planning Document', '2025-05-28', 'approved', 'compliant', NULL, NULL, '2025-05-27 16:43:11', '2025-05-27 16:43:11');
 
 -- --------------------------------------------------------
 
@@ -314,6 +530,13 @@ CREATE TABLE `purchases` (
   `unit_price` decimal(10,2) NOT NULL,
   `total_price` decimal(12,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `purchases`
+--
+
+INSERT INTO `purchases` (`id`, `bill_number`, `supplier`, `purchase_date`, `item_id`, `item_name`, `quantity`, `unit_price`, `total_price`) VALUES
+(1, '	BN-20230501', 'MedSupplies Inc', '2025-05-28', '101', '	Surgical Masks', 500, 1.50, 750.00);
 
 -- --------------------------------------------------------
 
@@ -350,7 +573,8 @@ CREATE TABLE `resources` (
 --
 
 INSERT INTO `resources` (`resources_id`, `name`, `type`, `availability`, `quantity`, `project_id`, `created_at`, `updated_at`) VALUES
-(3, 'Laptop Dell XPS 15', '	Hardware', 0, 10, 1, '2025-05-25 20:06:04', '2025-05-25 20:06:04');
+(3, 'Laptop Dell XPS 15', '	Hardware', 0, 10, 1, '2025-05-25 20:06:04', '2025-05-25 20:06:04'),
+(4, 'ROG LAPTOP', 'Hardware', 5, 10, 2, '2025-05-27 21:38:38', '2025-05-27 21:38:38');
 
 -- --------------------------------------------------------
 
@@ -375,7 +599,8 @@ CREATE TABLE `risks` (
 --
 
 INSERT INTO `risks` (`risks_id`, `name`, `description`, `probability`, `impact_level`, `mitigation_plan`, `project_id`, `created_at`, `updated_at`) VALUES
-(2, '	Data Breach', 'Unauthorized access to sensitive data', 'High', 'Critical', 'Implement strict access controls', 1, '2025-05-25 20:16:17', '2025-05-25 20:16:17');
+(2, '	Data Breach', 'Unauthorized access to sensitive data', 'High', 'Critical', 'Implement strict access controls', 1, '2025-05-25 20:16:17', '2025-05-25 20:16:17'),
+(3, 'Cyber Attack', 'Potential attack on hospital servers', 'High', 'Critical', 'Conduct regular penetration testing and staff training', 2, '2025-05-27 21:39:41', '2025-05-27 21:39:41');
 
 -- --------------------------------------------------------
 
@@ -433,6 +658,14 @@ CREATE TABLE `supplier` (
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `supplier`
+--
+
+INSERT INTO `supplier` (`supplier_id`, `supplier_name`, `contact_info`, `rating`, `created_at`, `updated_at`) VALUES
+(1, 'MediSupply Inc.', '	555-1111 / medsup@hmail.com', 4.8, '2025-05-27 07:39:38', '2025-05-27 07:39:38'),
+(2, 'MediTech Supplies', '	medi-tech@gmail.com,', 4.8, '2025-05-27 21:40:56', '2025-05-27 21:40:56');
+
 -- --------------------------------------------------------
 
 --
@@ -455,7 +688,8 @@ CREATE TABLE `task` (
 --
 
 INSERT INTO `task` (`task_id`, `project_id`, `name`, `start_date`, `end_date`, `status`, `created_at`, `updated_at`) VALUES
-(0, 1, 'Design Database Schema', '2025-05-26', '2025-05-28', 'Pending', '2025-05-25 20:01:14', '2025-05-25 20:01:14');
+(0, 1, 'Design Database Schema', '2025-05-26', '2025-05-28', 'Pending', '2025-05-25 20:01:14', '2025-05-25 20:01:14'),
+(0, 2, '	Design Patient Form', '2025-05-28', '2025-05-29', 'Pending', '2025-05-27 21:36:45', '2025-05-27 21:36:45');
 
 -- --------------------------------------------------------
 
@@ -507,6 +741,27 @@ ALTER TABLE `asset_log`
   ADD KEY `asset_id` (`asset_id`);
 
 --
+-- Indexes for table `asset_management_documents`
+--
+ALTER TABLE `asset_management_documents`
+  ADD PRIMARY KEY (`record_id`),
+  ADD KEY `asset_id` (`asset_id`);
+
+--
+-- Indexes for table `bed_assignments`
+--
+ALTER TABLE `bed_assignments`
+  ADD PRIMARY KEY (`assignment_id`),
+  ADD KEY `bed_id` (`bed_id`);
+
+--
+-- Indexes for table `bed_inventory`
+--
+ALTER TABLE `bed_inventory`
+  ADD PRIMARY KEY (`bed_id`),
+  ADD KEY `warehouse_id` (`warehouse_id`);
+
+--
 -- Indexes for table `contracts`
 --
 ALTER TABLE `contracts`
@@ -520,11 +775,32 @@ ALTER TABLE `employee`
   ADD PRIMARY KEY (`employee_id`);
 
 --
+-- Indexes for table `hospital_suppliers`
+--
+ALTER TABLE `hospital_suppliers`
+  ADD PRIMARY KEY (`supplier_id`);
+
+--
+-- Indexes for table `hospital_supplies_inventory`
+--
+ALTER TABLE `hospital_supplies_inventory`
+  ADD PRIMARY KEY (`supply_id`),
+  ADD KEY `fk_supplier` (`supplier_id`);
+
+--
 -- Indexes for table `inventory_item`
 --
 ALTER TABLE `inventory_item`
   ADD PRIMARY KEY (`item_id`),
   ADD KEY `warehouse_id` (`warehouse_id`);
+
+--
+-- Indexes for table `inventory_movements`
+--
+ALTER TABLE `inventory_movements`
+  ADD PRIMARY KEY (`movement_id`),
+  ADD KEY `from_warehouse_id` (`from_warehouse_id`),
+  ADD KEY `to_warehouse_id` (`to_warehouse_id`);
 
 --
 -- Indexes for table `item_log`
@@ -534,6 +810,13 @@ ALTER TABLE `item_log`
   ADD KEY `item_id` (`item_id`);
 
 --
+-- Indexes for table `linen_inventory`
+--
+ALTER TABLE `linen_inventory`
+  ADD PRIMARY KEY (`linen_id`),
+  ADD KEY `warehouse_id` (`warehouse_id`);
+
+--
 -- Indexes for table `login`
 --
 ALTER TABLE `login`
@@ -541,10 +824,31 @@ ALTER TABLE `login`
   ADD UNIQUE KEY `email` (`email`);
 
 --
+-- Indexes for table `maintenance`
+--
+ALTER TABLE `maintenance`
+  ADD PRIMARY KEY (`maintenance_id`),
+  ADD UNIQUE KEY `asset_id` (`asset_id`);
+
+--
 -- Indexes for table `maintenance_log`
 --
 ALTER TABLE `maintenance_log`
   ADD PRIMARY KEY (`log_id`);
+
+--
+-- Indexes for table `maintenance_schedule`
+--
+ALTER TABLE `maintenance_schedule`
+  ADD PRIMARY KEY (`schedule_id`),
+  ADD KEY `maintenance_id` (`maintenance_id`),
+  ADD KEY `asset_id` (`asset_id`);
+
+--
+-- Indexes for table `patients`
+--
+ALTER TABLE `patients`
+  ADD PRIMARY KEY (`patient_id`);
 
 --
 -- Indexes for table `procurement`
@@ -572,6 +876,13 @@ ALTER TABLE `progress_report`
 --
 ALTER TABLE `project`
   ADD PRIMARY KEY (`project_id`);
+
+--
+-- Indexes for table `project_documentation`
+--
+ALTER TABLE `project_documentation`
+  ADD PRIMARY KEY (`doc_id`),
+  ADD KEY `project_id` (`project_id`);
 
 --
 -- Indexes for table `project_employee`
@@ -655,6 +966,24 @@ ALTER TABLE `asset_log`
   MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `asset_management_documents`
+--
+ALTER TABLE `asset_management_documents`
+  MODIFY `record_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `bed_assignments`
+--
+ALTER TABLE `bed_assignments`
+  MODIFY `assignment_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `bed_inventory`
+--
+ALTER TABLE `bed_inventory`
+  MODIFY `bed_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `contracts`
 --
 ALTER TABLE `contracts`
@@ -664,7 +993,19 @@ ALTER TABLE `contracts`
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `employee_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `employee_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `hospital_suppliers`
+--
+ALTER TABLE `hospital_suppliers`
+  MODIFY `supplier_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `hospital_supplies_inventory`
+--
+ALTER TABLE `hospital_supplies_inventory`
+  MODIFY `supply_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `inventory_item`
@@ -673,10 +1014,22 @@ ALTER TABLE `inventory_item`
   MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `inventory_movements`
+--
+ALTER TABLE `inventory_movements`
+  MODIFY `movement_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `item_log`
 --
 ALTER TABLE `item_log`
   MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `linen_inventory`
+--
+ALTER TABLE `linen_inventory`
+  MODIFY `linen_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `login`
@@ -685,34 +1038,58 @@ ALTER TABLE `login`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `maintenance`
+--
+ALTER TABLE `maintenance`
+  MODIFY `maintenance_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `maintenance_log`
 --
 ALTER TABLE `maintenance_log`
   MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `maintenance_schedule`
+--
+ALTER TABLE `maintenance_schedule`
+  MODIFY `schedule_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `patients`
+--
+ALTER TABLE `patients`
+  MODIFY `patient_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `procurement`
 --
 ALTER TABLE `procurement`
-  MODIFY `procurement_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `procurement_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `procurement_item`
 --
 ALTER TABLE `procurement_item`
-  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `progress_report`
 --
 ALTER TABLE `progress_report`
-  MODIFY `progress_report_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `progress_report_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `project`
 --
 ALTER TABLE `project`
-  MODIFY `project_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `project_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `project_documentation`
+--
+ALTER TABLE `project_documentation`
+  MODIFY `doc_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `project_employee`
@@ -724,7 +1101,7 @@ ALTER TABLE `project_employee`
 -- AUTO_INCREMENT for table `purchases`
 --
 ALTER TABLE `purchases`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `registration_info`
@@ -736,13 +1113,13 @@ ALTER TABLE `registration_info`
 -- AUTO_INCREMENT for table `resources`
 --
 ALTER TABLE `resources`
-  MODIFY `resources_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `resources_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `risks`
 --
 ALTER TABLE `risks`
-  MODIFY `risks_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `risks_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `shipment`
@@ -760,7 +1137,7 @@ ALTER TABLE `spareparts`
 -- AUTO_INCREMENT for table `supplier`
 --
 ALTER TABLE `supplier`
-  MODIFY `supplier_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `supplier_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `warehouse`
@@ -792,10 +1169,34 @@ ALTER TABLE `asset_log`
   ADD CONSTRAINT `asset_log_ibfk_1` FOREIGN KEY (`asset_id`) REFERENCES `asset` (`asset_id`);
 
 --
+-- Constraints for table `asset_management_documents`
+--
+ALTER TABLE `asset_management_documents`
+  ADD CONSTRAINT `asset_management_documents_ibfk_1` FOREIGN KEY (`asset_id`) REFERENCES `asset` (`asset_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `bed_assignments`
+--
+ALTER TABLE `bed_assignments`
+  ADD CONSTRAINT `bed_assignments_ibfk_1` FOREIGN KEY (`bed_id`) REFERENCES `bed_inventory` (`bed_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `bed_inventory`
+--
+ALTER TABLE `bed_inventory`
+  ADD CONSTRAINT `bed_inventory_ibfk_1` FOREIGN KEY (`warehouse_id`) REFERENCES `warehouse` (`warehouse_id`) ON DELETE CASCADE;
+
+--
 -- Constraints for table `contracts`
 --
 ALTER TABLE `contracts`
   ADD CONSTRAINT `contracts_ibfk_1` FOREIGN KEY (`company_id`) REFERENCES `registration_info` (`company_id`);
+
+--
+-- Constraints for table `hospital_supplies_inventory`
+--
+ALTER TABLE `hospital_supplies_inventory`
+  ADD CONSTRAINT `fk_supplier` FOREIGN KEY (`supplier_id`) REFERENCES `hospital_suppliers` (`supplier_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `inventory_item`
@@ -804,10 +1205,30 @@ ALTER TABLE `inventory_item`
   ADD CONSTRAINT `inventory_item_ibfk_1` FOREIGN KEY (`warehouse_id`) REFERENCES `warehouse` (`warehouse_id`);
 
 --
+-- Constraints for table `inventory_movements`
+--
+ALTER TABLE `inventory_movements`
+  ADD CONSTRAINT `inventory_movements_ibfk_1` FOREIGN KEY (`from_warehouse_id`) REFERENCES `warehouse` (`warehouse_id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `inventory_movements_ibfk_2` FOREIGN KEY (`to_warehouse_id`) REFERENCES `warehouse` (`warehouse_id`) ON DELETE SET NULL;
+
+--
 -- Constraints for table `item_log`
 --
 ALTER TABLE `item_log`
   ADD CONSTRAINT `item_log_ibfk_1` FOREIGN KEY (`item_id`) REFERENCES `inventory_item` (`item_id`);
+
+--
+-- Constraints for table `linen_inventory`
+--
+ALTER TABLE `linen_inventory`
+  ADD CONSTRAINT `linen_inventory_ibfk_1` FOREIGN KEY (`warehouse_id`) REFERENCES `warehouse` (`warehouse_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `maintenance_schedule`
+--
+ALTER TABLE `maintenance_schedule`
+  ADD CONSTRAINT `maintenance_schedule_ibfk_1` FOREIGN KEY (`maintenance_id`) REFERENCES `maintenance` (`maintenance_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `maintenance_schedule_ibfk_2` FOREIGN KEY (`asset_id`) REFERENCES `maintenance` (`asset_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `procurement`
@@ -826,6 +1247,12 @@ ALTER TABLE `procurement_item`
 --
 ALTER TABLE `progress_report`
   ADD CONSTRAINT `progress_report_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `project` (`project_id`);
+
+--
+-- Constraints for table `project_documentation`
+--
+ALTER TABLE `project_documentation`
+  ADD CONSTRAINT `project_documentation_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `project` (`project_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `project_employee`
