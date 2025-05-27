@@ -44,7 +44,7 @@ include(($_SERVER['DOCUMENT_ROOT'] . '/Logistics/config/config.php'));
                         <svg xmlns="http://www.w3.org/2000/svg" class="size-8 fill-current text-white" width="24" height="24" viewBox="0 0 24 24">
                             <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 15v6H5v-6m11 2H8m7.913-2.337L8.087 13m8.626-.62L9.463 9m8.71 1.642L12.044 5.5m7.99 3.304L15.109 2.5" />
                         </svg>
-                        <span>Procurement</span>
+                        <span>Procurement Management</span>
                     </a>
                 </li>
                 <li class="rounded-sm menu-item">
@@ -52,7 +52,7 @@ include(($_SERVER['DOCUMENT_ROOT'] . '/Logistics/config/config.php'));
                         <svg xmlns="http://www.w3.org/2000/svg" class="size-8 fill-current text-white" width="24" height="24" viewBox="0 0 24 24">
                             <path fill="currentColor" d="M22 13.478V18a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3v-4.522l.553.277a21 21 0 0 0 18.897-.002zM14 2a3 3 0 0 1 3 3v1h2a3 3 0 0 1 3 3v2.242l-1.447.724a19 19 0 0 1-16.726.186l-.647-.32l-1.18-.59V9a3 3 0 0 1 3-3h2V5a3 3 0 0 1 3-3zm-2 8a1 1 0 0 0-1 1a1 1 0 1 0 2 .01c0-.562-.448-1.01-1-1.01m2-6h-4a1 1 0 0 0-1 1v1h6V5a1 1 0 0 0-1-1" />
                         </svg>
-                        <span>Assets</span>
+                        <span>Assets Management</span>
                     </a>
                 </li>
                 <li class="rounded-sm menu-item">
@@ -60,13 +60,13 @@ include(($_SERVER['DOCUMENT_ROOT'] . '/Logistics/config/config.php'));
                         <svg xmlns="http://www.w3.org/2000/svg" class="size-8 fill-current text-white" width="640" height="512" viewBox="0 0 640 512">
                             <path fill="currentColor" d="M0 488V171.3c0-26.2 15.9-49.7 40.2-59.4L308.1 4.8c7.6-3.1 16.1-3.1 23.8 0l267.9 107.1c24.3 9.7 40.2 33.3 40.2 59.4V488c0 13.3-10.7 24-24 24h-48c-13.3 0-24-10.7-24-24V224c0-17.7-14.3-32-32-32H128c-17.7 0-32 14.3-32 32v264c0 13.3-10.7 24-24 24H24c-13.3 0-24-10.7-24-24m488 24H152c-13.3 0-24-10.7-24-24v-56h384v56c0 13.3-10.7 24-24 24M128 400v-64h384v64zm0-96v-80h384v80z" />
                         </svg>
-                        <span>Warehouse</span>
+                        <span>Warehouse Management</span>
                     </a>
                 </li>
                 <li class="rounded-sm menu-item">
                     <a rel="noopener noreferrer" href="/Logistics/src/users/admin/mro-management.php" class="flex items-center p-2 space-x-3 rounded-md">
                         <svg xmlns="http://www.w3.org/2000/svg"  class="size-8 fill-current text-white" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M16.5 2a5.5 5.5 0 0 0-5.348 6.789L2.841 17.1a2.871 2.871 0 1 0 4.06 4.06l4.115-4.113a6.5 6.5 0 0 1 9.172-5.467A5.5 5.5 0 0 0 22 7.5a5.5 5.5 0 0 0-.282-1.745a.75.75 0 0 0-1.242-.292l-2.444 2.444a.75.75 0 0 1-1.06 0l-.879-.878a.75.75 0 0 1 0-1.06l2.445-2.445a.75.75 0 0 0-.293-1.241A5.5 5.5 0 0 0 16.5 2m-2.223 11.976a2 2 0 0 1-1.441 2.496l-.584.144a5.7 5.7 0 0 0 .006 1.808l.54.13a2 2 0 0 1 1.45 2.51l-.187.631c.44.386.94.699 1.485.922l.493-.519a2 2 0 0 1 2.899 0l.499.525a5.3 5.3 0 0 0 1.482-.913l-.198-.686a2 2 0 0 1 1.442-2.496l.583-.144a5.7 5.7 0 0 0-.006-1.808l-.54-.13a2 2 0 0 1-1.449-2.51l.186-.63a5.3 5.3 0 0 0-1.484-.922l-.493.518a2 2 0 0 1-2.9 0l-.498-.525c-.544.22-1.044.53-1.483.912zM17.5 19c-.8 0-1.45-.672-1.45-1.5S16.7 16 17.5 16s1.45.672 1.45 1.5S18.3 19 17.5 19"/></svg>
-                        <span>MRO</span>
+                        <span>MRO Management</span>
                     </a>
                 </li>
 
