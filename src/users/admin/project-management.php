@@ -52,22 +52,22 @@ try {
                     <div class="grid grid-cols-3 gap-10">
                         <!-- Total Project Card -->
                         <div class="shadow-2xl bg-gray-200 border border-gray-200 rounded-2xl flex justify-between items-center px-6 py-4">
-                           <div class="flex space-x-3">
-                             <span class="iconify text-blue-500 text-3xl size-10" data-icon="ic:baseline-folder"></span>
-                            <div class="text-3xl font-semibold">Total Project</div>
-                           </div>
+                            <div class="flex space-x-3">
+                                <span class="iconify text-blue-500 text-3xl size-10" data-icon="ic:baseline-folder"></span>
+                                <div class="text-3xl font-semibold">Total Project</div>
+                            </div>
                             <div class="text-right">
-                                
+
                                 <div class="text-3xl bg-gray-400 border border-gray-500 p-3 rounded-lg font-semibold"><?php echo $totalProjects; ?></div>
                             </div>
                         </div>
-                        
+
                         <!-- Total Task Card -->
                         <div class="shadow-2xl bg-gray-200 border border-gray-200 rounded-2xl flex justify-between items-center px-6 py-4">
                             <div class="flex space-x-3">
-                             <span class="iconify text-green-500 text-3xl size-10" data-icon="ic:baseline-folder"></span>
-                            <div class="text-3xl font-semibold">Total Tasks</div>
-                           </div>
+                                <span class="iconify text-green-500 text-3xl size-10" data-icon="ic:baseline-folder"></span>
+                                <div class="text-3xl font-semibold">Total Tasks</div>
+                            </div>
                             <div class="text-right">
                                 <div class="text-3xl bg-gray-400 border border-gray-500 p-3 rounded-lg font-semibold"><?php echo $totalTasks; ?></div>
                             </div>
@@ -76,8 +76,8 @@ try {
                         <!-- Total Employee Card -->
                         <div class="shadow-2xl bg-gray-200 border border-gray-200 rounded-2xl flex justify-between items-center px-6 py-4">
                             <div class="flex space-x-3">
-                                <span class="iconify text-orange-500 text-3xl"  size-10 data-icon="mdi:account-multiple"></span>
-                            <div class="text-3xl font-semibold">Total Employee</div>
+                                <span class="iconify text-orange-500 text-3xl" size-10 data-icon="mdi:account-multiple"></span>
+                                <div class="text-3xl font-semibold">Total Employee</div>
                             </div>
                             <div class="text-right">
                                 <div class="text-3xl bg-gray-400 border border-gray-500 p-3 rounded-lg font-semibold"><?php echo $totalEmployees; ?></div>
@@ -119,6 +119,12 @@ try {
                             <span class="iconify text-gray-700 text-5xl" data-icon="mdi:chart-line"></span>
                             <div class="text-3xl font-semibold">Progress Report</div>
                         </a>
+
+                        <a href="/Logistics/src/users/admin/tables/view-project-documentation.php" class="shadow-2xl bg-white border hover:bg-gray-400 border-gray-200 rounded-2xl flex flex-col justify-center items-center h-40">
+                            <span class="iconify text-gray-700 text-5xl" data-icon="mdi:file-document"></span>
+                            <div class="text-3xl font-semibold">Project Documentation</div>
+                        </a>
+
                     </div>
                 </div>
             </main>
