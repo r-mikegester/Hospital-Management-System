@@ -265,6 +265,7 @@ try {
                                     <div class="mb-3">
                                         <label for="edit-category" class="form-label">Category</label>
                                         <select name="category" id="edit-category" class="form-control" required>
+                                            <option value="">-- Select Category --</option>
                                             <option value="linen">Linen</option>
                                             <option value="hospital wear">Hospital Wear</option>
                                             <option value="equipment">Equipment</option>
@@ -331,7 +332,7 @@ try {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         function openEditModal(id, name, category, quantity, unit, price, manufacturer, supplierId, storageLocation, status) {
-            const modal = new bootstrap.Modal(document.getElementById('editSupplyModal'));
+            // Populate the edit form fields
             document.getElementById('edit-supply-id').value = id;
             document.getElementById('edit-supply-name').value = name;
             document.getElementById('edit-category').value = category;
@@ -342,7 +343,10 @@ try {
             document.getElementById('edit-supplier-id').value = supplierId;
             document.getElementById('edit-storage-location').value = storageLocation;
             document.getElementById('edit-status').value = status;
-            modal.show();
+
+            // Show the edit modal
+            var editModal = new bootstrap.Modal(document.getElementById('editSupplyModal'));
+            editModal.show();
         }
     </script>
 </body>
