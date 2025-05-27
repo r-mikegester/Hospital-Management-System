@@ -17,7 +17,6 @@ try {
 
     $stmt = $pdo->query("SELECT COUNT(*) AS total FROM asset_log");
     $totalAssetLogs = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
-
 } catch (PDOException $e) {
     echo "Query error: " . $e->getMessage();
     exit;
@@ -151,6 +150,11 @@ try {
                             <span class="iconify text-gray-700 text-5xl" data-icon="mdi:file-document"></span>
                             <div class="text-3xl font-semibold mt-4">Asset Logs</div>
                         </a>
+                        <a href="/Logistics/src/users/admin/tables/view-asset-documents.php" class="shadow-2xl bg-white border hover:bg-gray-400 border-gray-200 rounded-2xl flex flex-col justify-center items-center h-40">
+                            <span class="iconify text-gray-700 text-5xl" data-icon="mdi:file-document-edit-outline"></span>
+                            <div class="text-3xl font-semibold mt-4">Asset Documents</div>
+                        </a>
+
                     </div>
                 </div>
             </main>
