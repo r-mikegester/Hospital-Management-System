@@ -13,7 +13,6 @@ try {
 
     $stmt = $pdo->query("SELECT COUNT(*) AS total FROM warehouse");
     $totalWarehouses = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
-
 } catch (PDOException $e) {
     echo "Query error: " . $e->getMessage();
     exit;
@@ -105,7 +104,7 @@ try {
                     </div>
 
                     <div class="grid grid-cols-4 gap-10 mt-12">
-                         <!-- Procurement  -->
+                        <!-- Procurement  -->
                         <a href="/Logistics/src/users/admin/tables/view-procurement.php" class="shadow-2xl bg-white border hover:bg-gray-400 border-gray-200 rounded-2xl flex flex-col justify-center items-center h-40">
                             <span class="iconify text-gray-700 text-5xl" data-icon="mdi:cart-outline"></span>
                             <div class="text-3xl font-semibold mt-4">Procurement</div>
@@ -132,6 +131,14 @@ try {
                         <a href="/Logistics/src/users/admin/tables/view-warehouse.php" class="shadow-2xl bg-white border hover:bg-gray-400 border-gray-200 rounded-2xl flex flex-col justify-center items-center h-40">
                             <span class="iconify text-gray-700 text-5xl" data-icon="mdi:warehouse"></span>
                             <div class="text-3xl font-semibold mt-4">Warehouses</div>
+                        </a>
+                        <a href="/Logistics/src/users/admin/tables/view-hospital-supplies.php" class="shadow-2xl bg-white border hover:bg-gray-400 border-gray-200 rounded-2xl flex flex-col justify-center items-center h-40">
+                            <span class="iconify text-gray-700 text-5xl" data-icon="mdi:medical-bag"></span>
+                            <div class="text-3xl font-semibold mt-4">Hospital Supplies</div>
+                        </a>
+                        <a href="/Logistics/src/users/admin/tables/view-hospital-suppliers.php" class="shadow-2xl bg-white border hover:bg-gray-400 border-gray-200 rounded-2xl flex flex-col justify-center items-center h-40">
+                            <span class="iconify text-gray-700 text-5xl" data-icon="mdi:storefront"></span>
+                            <div class="text-3xl font-semibold mt-4">Hospital Suppliers</div>
                         </a>
                     </div>
                 </div>
