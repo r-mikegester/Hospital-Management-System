@@ -14,7 +14,6 @@ try {
 
     $stmt = $pdo->query("SELECT COUNT(*) AS total FROM employee");
     $totalemployee = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
-
 } catch (PDOException $e) {
     echo "Query error: " . $e->getMessage();
     exit;
@@ -131,6 +130,25 @@ try {
                             <span class="iconify text-gray-700 text-5xl" data-icon="mdi:account"></span>
                             <div class="text-3xl font-semibold mt-4">Employee Management</div>
                         </a>
+
+                        <a href="/Logistics/src/users/admin/tables/view-beds.php" class="shadow-2xl bg-white border hover:bg-gray-400 border-gray-200 rounded-2xl flex flex-col justify-center items-center h-40">
+                            <span class="iconify text-gray-700 text-5xl" data-icon="mdi:bed-king"></span>
+                            <div class="text-3xl font-semibold mt-4">Bed Inventory</div>
+                        </a>
+                        <a href="/Logistics/src/users/admin/tables/view-linen.php" class="shadow-2xl bg-white border hover:bg-gray-400 border-gray-200 rounded-2xl flex flex-col justify-center items-center h-40">
+                            <span class="iconify text-gray-700 text-5xl" data-icon="mdi:bed-king"></span>
+                            <div class="text-3xl font-semibold mt-4">Linen Inventory</div>
+                        </a>
+                        <a href="/Logistics/src/users/admin/tables/view-inventory-movement.php" class="shadow-2xl bg-white border hover:bg-gray-400 border-gray-200 rounded-2xl flex flex-col justify-center items-center h-40">
+                            <span class="iconify text-gray-700 text-5xl" data-icon="mdi:bed-king"></span>
+                            <div class="text-3xl font-semibold mt-4">Inventory Movement</div>
+                        </a>
+                        <a href="/Logistics/src/users/admin/tables/view-bed-assignment.php" class="shadow-2xl bg-white border hover:bg-gray-400 border-gray-200 rounded-2xl flex flex-col justify-center items-center h-40">
+                            <span class="iconify text-gray-700 text-5xl" data-icon="mdi:bed-king"></span>
+                            <div class="text-3xl font-semibold mt-4">Bed Assignments</div>
+                        </a>
+
+                        
                     </div>
                 </div>
             </main>
