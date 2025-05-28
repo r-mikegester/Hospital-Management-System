@@ -108,6 +108,7 @@ try {
                             </select>
                         </div>
                         <div class="col-md-3">
+                            
                             <select name="patient_id" class="form-control" required>
                                 <option value="" disabled selected>Select Patient</option>
                                 <?php foreach ($patients as $patient): ?>
